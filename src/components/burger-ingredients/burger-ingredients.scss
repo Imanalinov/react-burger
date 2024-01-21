@@ -1,0 +1,53 @@
+@use '../../styles/variable' as *;
+
+$container-height: calc(100vh - $header-height);
+$title-height: 80px;
+$step-height: 56px + 20px;
+
+.ingredient {
+  width: 50%;
+  height: calc(100vh - 102px - 40px);
+
+  &--container {
+    overflow-y: scroll;
+    max-height: calc($container-height - $title-height - $step-height - 40px);
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #2F2F37;
+      margin-bottom: 40px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #8585AD;
+    }
+  }
+
+  &--wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 24px;
+  }
+  &--item {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    position: relative;
+  }
+}
+
+.item {
+  &--img {
+    width: 100%;
+  }
+
+  &--price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

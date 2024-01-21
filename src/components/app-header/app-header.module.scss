@@ -1,0 +1,20 @@
+.header {
+  padding: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &--link-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
