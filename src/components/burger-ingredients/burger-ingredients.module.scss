@@ -1,4 +1,4 @@
-@use '../../styles/variable' as *;
+@use "../../styles/variable" as *;
 
 $container-height: calc(100vh - $header-height);
 $title-height: 80px;
@@ -24,30 +24,5 @@ $step-height: 56px + 20px;
     &::-webkit-scrollbar-thumb {
       background: #8585AD;
     }
-  }
-
-  &--wrapper {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px 24px;
-  }
-  &--item {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-
-    position: relative;
-  }
-}
-
-.item {
-  &--img {
-    width: 100%;
-  }
-
-  &--price {
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }

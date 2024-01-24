@@ -1,60 +1,56 @@
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import './burger-constructor.scss';
+import styles from './burger-constructor.module.scss';
 import { DATA } from '../../utils/data';
 import PropTypes from 'prop-types';
+import { ingredientType } from '../../utils/ingredient-prop-type';
+import { useMemo } from 'react';
 
-const BurgerConstructor = ({ ingredientList }) => {
+const BurgerConstructor = ({ constructorIngredients }) => {
+  const filteredIngredientList = useMemo(() => constructorIngredients.filter(
+    (_, index) => index !== 0 && index !== constructorIngredients.length - 1), [constructorIngredients]);
 
-  const getConstructionElementList = () => {
-    const filteredIngredientList = ingredientList.filter(
-      (_, index) => index !== 0 && index !== ingredientList.length - 1
-    )
-    return (
-      filteredIngredientList.map((ingredient) => (
-        <li key={ingredient._id}>
-          <DragIcon type="primary" />
-          <ConstructorElement
-            isLocked={false}
-            text={ingredient.name}
-            price={ingredient.price}
-            thumbnail={ingredient.image}
-          />
-        </li>
-      ))
-    )
-  }
 
   return (
     <section className={`mt-25`}>
-      <ul>
+      <ul className={`mb-4 pr-6`}>
         <li>
           <ConstructorElement
             type='top'
             isLocked={true}
-            text={ingredientList[0].name}
-            price={ingredientList[0].price}
-            thumbnail={ingredientList[0].image}
+            text={constructorIngredients[0].name}
+            price={constructorIngredients[0].price}
+            thumbnail={constructorIngredients[0].image}
           />
         </li>
       </ul>
-      <div className={`overflow`}>
-        <ul className={`mt-4`}>
-          {getConstructionElementList()}
+      <div className={styles.overflow}>
+        <ul>
+          {filteredIngredientList.map((ingredient) => (
+            <li key={ingredient._id}>
+              <DragIcon type="primary" />
+              <ConstructorElement
+                isLocked={false}
+                text={ingredient.name}
+                price={ingredient.price}
+                thumbnail={ingredient.image}
+              />
+            </li>
+          ))}
         </ul>
       </div>
-      <ul className={`mt-4`}>
+      <ul className={`mt-4 pr-6`}>
         <li>
           <ConstructorElement
             type='bottom'
             isLocked={true}
-            text={ingredientList.last.name}
-            price={ingredientList.last.price}
-            thumbnail={ingredientList.last.image}
+            text={constructorIngredients.at(-1).name}
+            price={constructorIngredients.at(-1).price}
+            thumbnail={constructorIngredients.at(-1).image}
           />
         </li>
       </ul>
 
-      <div className={`mt-10 constructor--submit`}>
+      <div className={`mt-10 ${styles['constructor--submit']}`}>
         <span className={`mr-10`}>
           <span className={`text text_type_digits-medium`}>610</span>
           <CurrencyIcon type="primary" />
@@ -71,11 +67,11 @@ const BurgerConstructor = ({ ingredientList }) => {
 }
 
 BurgerConstructor.defaultProps = {
-  ingredientList: DATA,
+  constructorIngredients: DATA,
 }
 
 BurgerConstructor.propTypes = {
-  ingredientList: PropTypes.array
+  constructorIngredients: PropTypes.arrayOf(ingredientType.isRequired).isRequired
 }
 
 export default BurgerConstructor;

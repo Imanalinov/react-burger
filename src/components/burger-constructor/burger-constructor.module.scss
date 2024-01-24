@@ -10,17 +10,15 @@ $submit-button-margin-top: 40px;
 ul {
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: flex-end;
   justify-content: center;
   gap: 16px;
   padding-inline: 16px;
-
-
 }
 
 li {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   gap: 8px;
   width: 100%;
@@ -29,12 +27,17 @@ li {
 .constructor--submit {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .overflow {
   overflow-y: scroll;
-  height: calc(100vh - $header-height - $section-margin-top - $item-height - $overflow-box-margin-top - $item-height - $submit-button-margin-top - $submit-button-height);
+  height: calc(
+          100vh - $header-height - $section-margin-top -
+          $item-height - $overflow-box-margin-top -
+          $item-height - $submit-button-margin-top -
+          $submit-button-height - $overflow-box-margin-top
+  );
 
   &::-webkit-scrollbar {
     width: 8px;

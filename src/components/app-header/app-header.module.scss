@@ -1,20 +1,24 @@
 .header {
-  padding: 16px;
+  padding-block: 16px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 
-  &--link-wrapper {
+  &--link_wrapper {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
-  }
-}
 
-.link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    &-end {
+      @extend .header--link_wrapper;
+      justify-content: flex-end;
+    }
+  }
+
+  &--logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
