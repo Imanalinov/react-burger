@@ -4,53 +4,58 @@ import { DATA } from '../../utils/data';
 import PropTypes from 'prop-types';
 import { ingredientType } from '../../utils/ingredient-prop-type';
 import React, { useMemo, useState } from 'react';
-import { openModal } from '../../utils/open-modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import { createPortal } from 'react-dom';
+import Modal from '../../dialog/modal/modal';
 import OrderDetails from '../order-details/order-details';
 
 const BurgerConstructor = ({ constructorIngredients }) => {
-  const [modal, setModal] = useState(null);
+  const [isOpenIngredientModal, setIsOpenIngredientModal] = useState(false);
+  const [selectedIngredient, setSelectedIngredient] = useState(null);
+  const [isOpenOrderModal, setIsOpenOrderModal] = useState(false);
 
-  const filteredIngredientList = useMemo(() => constructorIngredients.filter(
-    (_, index) => index !== 0 && index !== constructorIngredients.length - 1), [constructorIngredients]);
+  const { bun, ingredients } = useMemo(() => {
+    return {
+      bun: constructorIngredients.find(item => item.type === 'bun'),
+      ingredients: constructorIngredients.filter(item => item.type !== 'bun'),
+    };
+  }, [constructorIngredients]);
+
+  const modalContainer = document.getElementById('modals_container');
 
   const onConstructorItemClick = (item) => {
-    setModal(openModal(
-      <IngredientDetails
-        ingredient={item}
-      />,
-      onClosePortal,
-      'Детали ингредиента'
-    ));
+    setSelectedIngredient(item);
+    setIsOpenIngredientModal(true);
   };
 
-  const onClosePortal = () => {
-    setModal(null);
-  };
+  const handleCloseModal = (isOrderModal) => {
+    if (isOrderModal) {
+      setIsOpenOrderModal(false);
+    } else {
+      setIsOpenIngredientModal(false);
+    }
+  }
 
   const createOrder = () => {
-    setModal(openModal(
-      <OrderDetails />,
-      onClosePortal
-    ));
-  };
+    setIsOpenOrderModal(true);
+  }
 
   return (
     <section className={`mt-25`}>
       <ul className={`mb-4 pr-6`}>
-        <li onClick={() => onConstructorItemClick(constructorIngredients[0])}>
+        <li onClick={() => onConstructorItemClick(bun)}>
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={constructorIngredients[0].name + ' (верх)'}
-            price={constructorIngredients[0].price}
-            thumbnail={constructorIngredients[0].image}
+            text={bun.name + ' (верх)'}
+            price={bun.price}
+            thumbnail={bun.image}
           />
         </li>
       </ul>
       <div className={styles.overflow}>
         <ul>
-          {filteredIngredientList.map((ingredient) => (
+          {ingredients.map((ingredient) => (
             <li
               onClick={() => onConstructorItemClick(ingredient)}
               key={ingredient._id}
@@ -67,13 +72,13 @@ const BurgerConstructor = ({ constructorIngredients }) => {
         </ul>
       </div>
       <ul className={`mt-4 pr-6`}>
-        <li onClick={() => onConstructorItemClick(constructorIngredients.at(-1))}>
+        <li onClick={() => onConstructorItemClick(bun)}>
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={constructorIngredients.at(-1).name + ' (низ)'}
-            price={constructorIngredients.at(-1).price}
-            thumbnail={constructorIngredients.at(-1).image}
+            text={bun.name + ' (низ)'}
+            price={bun.price}
+            thumbnail={bun.image}
           />
         </li>
       </ul>
@@ -96,7 +101,35 @@ const BurgerConstructor = ({ constructorIngredients }) => {
         </Button>
       </div>
 
-      {modal}
+      {
+        isOpenIngredientModal &&
+        createPortal(
+          <Modal
+            closeAction={() => handleCloseModal(false)}
+            title="Детали ингредиента"
+          >
+            <IngredientDetails
+              ingredient={selectedIngredient}
+            />
+          </Modal>,
+          modalContainer
+        )
+      }
+
+      {
+        isOpenOrderModal &&
+        createPortal(
+          <Modal
+            closeAction={() => handleCloseModal(true)}
+          >
+            <OrderDetails />
+          </Modal>,
+          modalContainer
+        )
+      }
+
+      
+
     </section>
   );
 };

@@ -3,7 +3,7 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import styles from './app.module.scss';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { API_URL } from '../../utils/constants';
+import { getIngredients } from '../../utils/burger-api';
 
 function App() {
   const [burgerIngredients, setBurgerIngredients] = useState({
@@ -13,10 +13,8 @@ function App() {
   });
 
   useEffect(() => {
-    fetch(API_URL + 'ingredients')
-      .then((res) => res.json())
+    getIngredients()
       .then((res) => {
-        console.log(res);
         setBurgerIngredients({
           loading: false,
           error: false,
@@ -40,11 +38,10 @@ function App() {
         {burgerIngredients.error && 'Error...'}
         {
           !!burgerIngredients.ingredients.length &&
-          <BurgerIngredients ingredientsList={burgerIngredients.ingredients} />
-        }
-        {
-          !!burgerIngredients.ingredients.length &&
-          <BurgerConstructor constructorIngredients={burgerIngredients.ingredients} />
+          <>
+            <BurgerIngredients ingredientsList={burgerIngredients.ingredients} />
+            <BurgerConstructor constructorIngredients={burgerIngredients.ingredients} />
+          </>
         }
       </div>
     </div>
