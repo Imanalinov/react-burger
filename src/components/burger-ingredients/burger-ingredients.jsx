@@ -1,5 +1,5 @@
 import styles from './burger-ingredients.module.scss';
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsCategory from '../ingredients-category/ingredients-category';
 import PropTypes from 'prop-types';
@@ -7,6 +7,7 @@ import { ingredientType } from '../../utils/ingredient-prop-type';
 
 const BurgerIngredients = ({ ingredientsList }) => {
   const [currentTab, setCurrentTab] = useState('bun');
+
 
   const buns = useMemo(() => ingredientsList.filter((item) => item.type === 'bun'), [ingredientsList]);
   const mains = useMemo(() => ingredientsList.filter((item) => item.type === 'main'), [ingredientsList]);
