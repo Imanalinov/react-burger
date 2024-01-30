@@ -1,13 +1,14 @@
 import acceptImage from '../../images/accept.png';
 import styles from './order-details.module.scss';
+import PropTypes from 'prop-types';
 
-const OrderDetails = () => {
+const OrderDetails = ({ orderId }) => {
   return (
     <div className={styles.order_details}>
       <p
         className="text text_type_digits-large"
       >
-        034536
+        {orderId}
       </p>
       <p
         className="mt-8 text text_type_main-medium"
@@ -30,6 +31,10 @@ const OrderDetails = () => {
       </p>
     </div>
   );
+};
+
+OrderDetails.propTypes = {
+  orderId: PropTypes.number.isRequired
 };
 
 export default OrderDetails;
