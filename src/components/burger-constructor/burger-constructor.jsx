@@ -1,98 +1,73 @@
-import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.scss';
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import Modal from '../../dialog/modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { createOrderReq } from '../../utils/burger-api';
-import { SelectedIngredientsContext } from '../../services/selected-ingredients-context';
+import { useDispatch, useSelector } from 'react-redux';
+import { createdOrderSlice, createOrderAPI } from '../../services/slices/created-order';
+import { selectedIngredientsSlice } from '../../services/slices/selected-ingredients';
+import { BunConstructorItem } from '../bun-constructor-item/bun-constructor-item';
+import { SelectedIngredient } from '../selected-ingredient/selected-ingredient';
+import { useDrop } from 'react-dnd';
 
 const BurgerConstructor = () => {
-  const {selectedIngredientsState} = useContext(SelectedIngredientsContext);
-  const [orderDetails, setOrderDetails] = useState({
-    loading: false,
-    error: false,
-    data: null
-  });
+  const selectedIngredients = useSelector(store => store.selectedIngredients);
+  const createdOrder = useSelector(store => store.createdOrder);
+  const draggingState = useSelector(store => store.ingredientDragging);
+  const { closeModal } = createdOrderSlice.actions;
+  const { add } = selectedIngredientsSlice.actions;
+  const dispatch = useDispatch();
 
-  const [isOpenOrderModal, setIsOpenOrderModal] = useState(false);
+  const [{ isOver }, dropRef] = useDrop({
+    accept: ['main', 'sauce'],
+    drop(item) {
+      dispatch(add(item));
+    },
+    collect: monitor => ({
+      isOver: monitor.isOver()
+    })
+  }, [dispatch]);
 
   const handleCloseOrderModal = () => {
-    setIsOpenOrderModal(false);
-  }
+    dispatch(closeModal());
+  };
 
-  const createOrder = () => {
-    setOrderDetails({
-      loading: true,
-      error: false,
-      data: null
-    });
-    const selectedIds = selectedIngredientsState.ingredients.map((item) => item._id);
-    selectedIds.push(selectedIngredientsState.bun._id);
+  const createOrderHandler = () => {
+    const selectedIds = selectedIngredients.ingredients.map((item) => item._id);
+    selectedIds.push(selectedIngredients.bun._id);
 
-    createOrderReq(selectedIds)
-      .then((data) => {
-        setOrderDetails({
-          loading: false,
-          error: false,
-          data: data
-        });
-        setIsOpenOrderModal(true);
-      })
-      .catch((_) => {
-        setOrderDetails({
-          loading: false,
-          error: true,
-          data: null
-        });
-      })
-  }
+    dispatch(createOrderAPI(selectedIds));
+  };
 
   return (
-    <section className={`mt-25`}>
-      <ul className={`mb-4 pr-6`}>
-        <li>
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={selectedIngredientsState.bun.name + ' (верх)'}
-            price={selectedIngredientsState.bun.price}
-            thumbnail={selectedIngredientsState.bun.image}
-          />
-        </li>
-      </ul>
-      <div className={styles.overflow}>
+    <section className={`mt-25 grow`}>
+      <BunConstructorItem isTop={true} bun={selectedIngredients.bun} />
+
+      <div
+        className={`
+          ${styles.overflow}
+          ${draggingState.isDragging && draggingState.item.type !== 'bun' ? styles.is_dragging : ''}
+          ${isOver ? styles.over : ''}
+        `}
+        ref={dropRef}>
         <ul>
-          {selectedIngredientsState.ingredients.map((ingredient) => (
-            <li
-              key={ingredient._id}
+          {selectedIngredients.ingredients.map((ingredient, index) => (
+            ingredient && <li
+              key={ingredient.uniqueId}
             >
-              <DragIcon type="primary" />
-              <ConstructorElement
-                isLocked={false}
-                text={ingredient.name}
-                price={ingredient.price}
-                thumbnail={ingredient.image}
-              />
+              <SelectedIngredient ingredient={({ ...ingredient, index })} index={index} />
             </li>
           ))}
         </ul>
       </div>
-      <ul className={`mt-4 pr-6`}>
-        <li>
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={selectedIngredientsState.bun.name + ' (низ)'}
-            price={selectedIngredientsState.bun.price}
-            thumbnail={selectedIngredientsState.bun.image}
-          />
-        </li>
-      </ul>
+
+      <BunConstructorItem isTop={false} bun={selectedIngredients.bun} />
+
       {/*---PRICE AND CREATE ORDER---*/}
       <div className={`mt-10 ${styles['constructor--submit']}`}>
         <span className={`mr-10`}>
           <span className={`text text_type_digits-medium`}>
-            {selectedIngredientsState.totalPrice}
+            {selectedIngredients.totalPrice}
           </span>
           <CurrencyIcon type="primary" />
         </span>
@@ -101,8 +76,8 @@ const BurgerConstructor = () => {
           htmlType="button"
           type="primary"
           size="large"
-          onClick={createOrder}
-          disabled={orderDetails.loading}
+          onClick={createOrderHandler}
+          disabled={createdOrder.loading}
         >
           <p className="text text_type_main-default">
             Оформить заказ
@@ -112,11 +87,11 @@ const BurgerConstructor = () => {
 
       {/*---MODAL---*/}
       {
-        isOpenOrderModal &&
+        createdOrder.modal &&
         <Modal
           closeAction={handleCloseOrderModal}
         >
-          <OrderDetails orderId={orderDetails.data.order.number} />
+          <OrderDetails orderId={createdOrder.data.order.number} />
         </Modal>
       }
     </section>

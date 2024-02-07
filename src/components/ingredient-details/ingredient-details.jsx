@@ -1,6 +1,9 @@
 import styles from './ingredient-details.module.scss';
+import { useSelector } from 'react-redux';
 
-const IngredientDetails = ({ ingredient }) => {
+const IngredientDetails = () => {
+  const ingredient = useSelector(store => store.viewIngredient);
+
   return (
     <div>
       <img

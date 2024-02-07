@@ -17,11 +17,6 @@ ul {
 }
 
 li {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
 }
 
 .constructor--submit {
@@ -31,7 +26,7 @@ li {
 }
 
 .overflow {
-  overflow-y: scroll;
+  overflow-y: auto;
   height: calc(
           100vh - $header-height - $section-margin-top -
           $item-height - $overflow-box-margin-top -
@@ -49,5 +44,29 @@ li {
 
   &::-webkit-scrollbar-thumb {
     background: #8585AD;
+  }
+}
+
+.is_dragging {
+  & > * {
+    opacity: 0;
+  }
+  position: relative;
+  &:before {
+    content:"";
+    position:absolute;
+    inset: 0;
+    left: 70px;
+    right: 20px;
+    border: 1px dashed white;
+    border-radius: 40px;
+    &.over {
+      border-color: green;
+    }
+  }
+  &.over {
+    &:before {
+      border-color: chartreuse;
+    }
   }
 }
