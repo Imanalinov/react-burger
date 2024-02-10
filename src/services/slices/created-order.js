@@ -26,7 +26,7 @@ export const createdOrderSlice = createSlice({
     closeModal: (state) => ({
       ...state,
       modal: false,
-    })
+    }),
   },
   extraReducers: (builder) => {
     builder.addCase(createOrderAPI.pending, (state) => {

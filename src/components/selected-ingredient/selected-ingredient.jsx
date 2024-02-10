@@ -5,10 +5,13 @@ import { useDispatch } from 'react-redux';
 import { selectedIngredientsSlice } from '../../services/slices/selected-ingredients';
 
 import styles from './selected-ingredient.module.scss';
+import { ingredientsSlice } from '../../services/slices/ingredients';
+import PropTypes from 'prop-types';
+import { ingredientType } from '../../utils/ingredient-prop-type';
 
 export const SelectedIngredient = ({ ingredient, index }) => {
+  const { decreaseSelectedIngredient } = ingredientsSlice.actions;
   const ref = useRef(null);
-
   const { move, deleteIngredient } = selectedIngredientsSlice.actions;
   const dispatch = useDispatch();
 
@@ -35,12 +38,13 @@ export const SelectedIngredient = ({ ingredient, index }) => {
       }
 
       dispatch(move({ dragIndex, hoverIndex }));
-    },
+    }
   });
 
   const deleteHandler = () => {
-    dispatch(deleteIngredient({ index, ingredient }))
-  }
+    dispatch(deleteIngredient({ index, ingredient }));
+    dispatch(decreaseSelectedIngredient(ingredient));
+  };
 
   drag(drop(ref));
 
@@ -57,3 +61,8 @@ export const SelectedIngredient = ({ ingredient, index }) => {
     </div>
   );
 };
+
+SelectedIngredient.propTypes = {
+  ingredient: ingredientType.isRequired,
+  index: PropTypes.number.isRequired
+}

@@ -9,19 +9,22 @@ import { selectedIngredientsSlice } from '../../services/slices/selected-ingredi
 import { BunConstructorItem } from '../bun-constructor-item/bun-constructor-item';
 import { SelectedIngredient } from '../selected-ingredient/selected-ingredient';
 import { useDrop } from 'react-dnd';
+import { ingredientsSlice } from '../../services/slices/ingredients';
 
 const BurgerConstructor = () => {
+  const { increaseSelectedIngredient, resetCount } = ingredientsSlice.actions;
   const selectedIngredients = useSelector(store => store.selectedIngredients);
+  const { add, reset } = selectedIngredientsSlice.actions;
   const createdOrder = useSelector(store => store.createdOrder);
-  const draggingState = useSelector(store => store.ingredientDragging);
   const { closeModal } = createdOrderSlice.actions;
-  const { add } = selectedIngredientsSlice.actions;
+  const draggingState = useSelector(store => store.ingredientDragging);
   const dispatch = useDispatch();
 
   const [{ isOver }, dropRef] = useDrop({
     accept: ['main', 'sauce'],
     drop(item) {
       dispatch(add(item));
+      dispatch(increaseSelectedIngredient(item));
     },
     collect: monitor => ({
       isOver: monitor.isOver()
@@ -29,10 +32,15 @@ const BurgerConstructor = () => {
   }, [dispatch]);
 
   const handleCloseOrderModal = () => {
+    dispatch(reset());
+    dispatch(resetCount());
     dispatch(closeModal());
   };
 
   const createOrderHandler = () => {
+    if (!selectedIngredients.bun) {
+      return;
+    }
     const selectedIds = selectedIngredients.ingredients.map((item) => item._id);
     selectedIds.push(selectedIngredients.bun._id);
 

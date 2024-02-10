@@ -40,7 +40,7 @@ export const selectedIngredientsSlice = createSlice({
     deleteIngredient: (state, action) => {
       if (state.ingredients.length === 1) {
         return {
-          totalPrice: state.bun.price * 2,
+          totalPrice: state.bun ? state.bun.price * 2 : 0,
           ingredients: [],
           bun: state.bun
         };
@@ -87,6 +87,7 @@ export const selectedIngredientsSlice = createSlice({
         ...state,
         ingredients: arr
       };
-    }
+    },
+    reset: (state) => selectedIngredientsInitialState
   }
 });

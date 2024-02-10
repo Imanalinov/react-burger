@@ -48,7 +48,7 @@ const BurgerIngredientsItem = ({ ingredient }) => {
         onClick={handleItemClick}
         ref={dragRef}
       >
-        {ingredient.count && <Counter count={ingredient.count} size="default" extraClass="m-1" />}
+        {ingredient.count > 0 && <Counter count={ingredient.count} size="default" extraClass="m-1" />}
         <img
           src={ingredient.image}
           className={`${styles['ingredient--image']} pr-4 pl-4`}

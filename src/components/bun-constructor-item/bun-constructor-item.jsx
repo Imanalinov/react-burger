@@ -4,17 +4,22 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectedIngredientsSlice } from '../../services/slices/selected-ingredients';
+import { ingredientsSlice } from '../../services/slices/ingredients';
+import PropTypes from 'prop-types';
 
 export const BunConstructorItem = ({ isTop }) => {
   const { bun } = useSelector(store => store.selectedIngredients);
   const draggingState = useSelector(store => store.ingredientDragging);
   const { add } = selectedIngredientsSlice.actions;
+  const { decreaseBun, increaseBun } = ingredientsSlice.actions;
   const dispatch = useDispatch();
 
   const [{ isHover }, bunDropTarget] = useDrop({
     accept: 'bun',
     drop(item) {
+      bun && dispatch(decreaseBun(bun));
       dispatch(add(item));
+      dispatch(increaseBun(item));
     },
     collect: monitor => ({
       isHover: monitor.isOver()
@@ -54,4 +59,9 @@ export const BunConstructorItem = ({ isTop }) => {
       </li>
     </ul>
   );
+};
+
+
+BunConstructorItem.propTypes = {
+  isTop: PropTypes.bool.isRequired
 };
