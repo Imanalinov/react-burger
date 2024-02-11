@@ -1,21 +1,63 @@
 import styles from './burger-ingredients.module.scss';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsCategory from '../ingredients-category/ingredients-category';
-import PropTypes from 'prop-types';
-import { ingredientType } from '../../utils/ingredient-prop-type';
+import { useSelector } from 'react-redux';
 
-const BurgerIngredients = ({ ingredientsList }) => {
+const BurgerIngredients = () => {
   const [currentTab, setCurrentTab] = useState('bun');
+  const ingredients = useSelector(store => store.ingredients);
+  const ref = useRef();
 
-
-  const buns = useMemo(() => ingredientsList.filter((item) => item.type === 'bun'), [ingredientsList]);
-  const mains = useMemo(() => ingredientsList.filter((item) => item.type === 'main'), [ingredientsList]);
-  const sauces = useMemo(() => ingredientsList.filter((item) => item.type === 'sauce'), [ingredientsList]);
+  const buns = useMemo(() => ingredients.data.filter((item) => item.type === 'bun'), [ingredients]);
+  const mains = useMemo(() => ingredients.data.filter((item) => item.type === 'main'), [ingredients]);
+  const sauces = useMemo(() => ingredients.data.filter((item) => item.type === 'sauce'), [ingredients]);
 
   const onTabClick = (event) => {
     setCurrentTab(event);
+    let el;
+
+    if (event === 'bun') {
+      el = 0;
+    } else if (event === 'sauce') {
+      el = ref.current.childNodes[0].offsetTop - 20;
+    } else {
+      el = ref.current.childNodes[1].offsetTop + ref.current.childNodes[0].offsetTop - 80;
+    }
+
+    ref.current.scrollTo({
+      behavior: "smooth",
+      left: 0,
+      top: el
+    });
+
   };
+
+  useEffect(() => {
+    const scrollHandler = (event) => {
+      const scrollTop = event.srcElement.scrollTop;
+      const childHeight1 = event.srcElement.childNodes[0].clientHeight;
+      const childHeight2 = event.srcElement.childNodes[1].clientHeight;
+
+      if (childHeight1 - 40 > scrollTop) {
+        setCurrentTab('bun')
+      } else if (
+        childHeight1 - 40 < scrollTop &&
+        childHeight2 + childHeight1 - 40 > scrollTop
+      ) {
+        setCurrentTab('sauce')
+      } else {
+        setCurrentTab('main')
+      }
+    }
+
+    const element = ref.current;
+
+    element.addEventListener('scroll', scrollHandler);
+    return () => {
+      element.removeEventListener('scroll', scrollHandler);
+    }
+  }, []);
 
   return (
     <section className={styles.ingredient}>
@@ -31,7 +73,7 @@ const BurgerIngredients = ({ ingredientsList }) => {
           Начинки
         </Tab>
       </div>
-      <div className={`mt-10 ${styles['ingredient--container']}`}>
+      <div className={`mt-10 ${styles['ingredient--container']}`} ref={ref}>
         <IngredientsCategory categoryName={'Булки'} ingredients={buns} />
         <IngredientsCategory categoryName={'Соусы'} ingredients={sauces} />
         <IngredientsCategory categoryName={'Начинки'} ingredients={mains} />
@@ -39,9 +81,5 @@ const BurgerIngredients = ({ ingredientsList }) => {
     </section>
   );
 };
-
-BurgerIngredients.propTypes = {
-  ingredientsList: PropTypes.arrayOf(ingredientType.isRequired).isRequired
-}
 
 export default BurgerIngredients;
