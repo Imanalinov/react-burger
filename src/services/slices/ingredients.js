@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getIngredients } from '../../utils/burger-api';
+import { getIngredientsRequest } from '../../utils/burger-api';
 
 export const ingredientsInitialState = {
   loading: true,
@@ -9,9 +9,9 @@ export const ingredientsInitialState = {
 
 export const getIngredientsAPI = createAsyncThunk(
   'INGREDIENTS/GET_ALL',
-  async (thunkAPI) => {
+  async (args, thunkAPI) => {
     try {
-      return await getIngredients();
+      return await getIngredientsRequest();
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -51,7 +51,7 @@ export const ingredientsSlice = createSlice({
       return {
         ...state,
         data: arr
-      }
+      };
     },
     decreaseBun: (state, action) => {
       const bun = action.payload;
@@ -61,7 +61,7 @@ export const ingredientsSlice = createSlice({
       return {
         ...state,
         data: arr
-      }
+      };
     },
     resetCount: (state) => {
       return {
@@ -70,6 +70,13 @@ export const ingredientsSlice = createSlice({
           ...item,
           count: 0
         }))
+      };
+    },
+    set: (state, action) => {
+      return {
+        loading: false,
+        error: false,
+        data: action.payload
       }
     }
   },
@@ -85,6 +92,6 @@ export const ingredientsSlice = createSlice({
     builder.addCase(getIngredientsAPI.rejected, (state) => {
       state.error = true;
       state.loading = false;
-    })
+    });
   }
 });

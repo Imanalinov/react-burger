@@ -14,7 +14,7 @@ const Modal = ({ children, closeAction, title = '' }) => {
     return () => {
       document.removeEventListener('keydown', keyPressHandler);
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const keyPressHandler = (event) => {
     if (event.key === 'Escape') {

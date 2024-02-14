@@ -7,16 +7,13 @@ $submit-button-height: 64px;
 $submit-button-margin-top: 40px;
 
 
-ul {
+.ul {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
   gap: 16px;
   padding-inline: 16px;
-}
-
-li {
 }
 
 .constructor--submit {
