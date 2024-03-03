@@ -1,17 +1,16 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngredientsAPI, ingredientsSlice } from '../../services/slices/ingredients';
+import { getIngredientsAPI } from '../../services/slices/ingredients';
 import React, { useEffect } from 'react';
 import { viewIngredientSlice } from '../../services/slices/view-ingredient';
 import Modal from '../../dialog/modal/modal';
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
 
 export const IngredientDetailsPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const { id } = useParams();
 
   const ingredientStore = useSelector(store => store.ingredients);
-  const ingredientActions = ingredientsSlice.actions;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

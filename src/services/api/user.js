@@ -1,6 +1,6 @@
 import { API_URL } from '../../utils/constants';
-import { checkResponse } from '../../utils/api-helpers';
-import { clearTokens, getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from '../../utils/token';
+import { checkResponse, fetchWithRefresh } from '../../utils/api-helpers';
+import { clearTokens, setAccessToken, setRefreshToken } from '../../utils/token';
 
 /**
  * @example return {
@@ -140,25 +140,16 @@ export const updateTokenRequest = () => {
  * }
  */
 export const logoutRequest = () => {
-  const refreshToken = getRefreshToken();
-  if (refreshToken) {
-    return fetch(`${API_URL}/auth/logout`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": refreshToken,
-      },
-      body: JSON.stringify({
-        token: localStorage.getItem('refreshToken')
-      })
-    })
-      .then(checkResponse)
-      .then(() => {
-        clearTokens();
-      })
-  }
-  throw new Error('Выход из системы невозможен, так как нет refresh токена')
-
+  return fetchWithRefresh(
+    '/auth/logout',
+    {
+      token: localStorage.getItem('refreshToken')
+    },
+    'POST'
+  )
+    .then(() => {
+      clearTokens();
+    });
 }
 
 /**
@@ -171,13 +162,5 @@ export const logoutRequest = () => {
  * }
  */
 export const getUserRequest = () => {
-  const token = getAccessToken();
-  return fetch(`${API_URL}/auth/user`, {
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": token,
-    }
-  })
-    .then(checkResponse)
+  return fetchWithRefresh('/auth/user');
 }

@@ -1,11 +1,12 @@
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import styles from './login.module.scss';
 import { validateEmail } from '../../utils/validators';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAPI } from '../../services/actions/user';
+import { useForm } from '../../hooks/use-form-hook';
 
 const formInitialState = {
   email: '',
@@ -13,7 +14,7 @@ const formInitialState = {
 };
 
 export const LoginPage = () => {
-  const [form, setForm] = useState(formInitialState);
+  const [form, onChange] = useForm(formInitialState);
   const userState = useSelector(store => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,13 +24,6 @@ export const LoginPage = () => {
       navigate('/profile', {replace: true});
     }
   }, [userState.user]);
-
-  const onChange = ({ target }) => {
-    setForm(prevState => ({
-      ...prevState,
-      [target.name]: target.value
-    }));
-  };
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -46,7 +40,10 @@ export const LoginPage = () => {
   return (
     <section className={styles.login__section}>
       <h1 className={'text text_type_main-medium'}>Вход</h1>
-      <form className={`mt-6 ${styles.login__form}`}>
+      <form
+        className={`mt-6 ${styles.login__form}`}
+        onSubmit={onSubmit}
+      >
         <EmailInput
           onChange={onChange}
           value={form.email}
@@ -63,10 +60,9 @@ export const LoginPage = () => {
           placeholder={'Пароль'}
         />
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="large"
-          onClick={onSubmit}
           extraClass={'mt-6'}
           disabled={userState.loading}
         >

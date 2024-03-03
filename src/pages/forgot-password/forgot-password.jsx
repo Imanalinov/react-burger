@@ -36,7 +36,10 @@ export const ForgotPasswordPage = () => {
       <h1 className={'text text_type_main-medium'}>
         Восстановление пароля
       </h1>
-      <form className={`mt-6 ${styles.forgot_password__form}`}>
+      <form
+        className={`mt-6 ${styles.forgot_password__form}`}
+        onSubmit={onSubmit}
+      >
         <EmailInput
           onChange={onChange}
           value={email}
@@ -45,10 +48,9 @@ export const ForgotPasswordPage = () => {
           placeholder={'Укажите e-mail'}
         />
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="large"
-          onClick={onSubmit}
           extraClass={'mt-6'}
           disabled={forgotPassword.loading}
         >
