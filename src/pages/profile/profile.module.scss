@@ -1,0 +1,46 @@
+@use "../../styles/variable" as var;
+
+.profile {
+  &__section {
+    display: flex;
+    flex-direction: row;
+    justify-items: flex-start;
+
+    margin-top: 120px;
+    gap: 60px;
+  }
+
+  &__aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}
+
+.list {
+  text-align: start;
+
+  &__item {
+
+    padding-block: 8px;
+
+    a {
+      color: var.$text-dark-grey;
+      text-decoration: none;
+    }
+
+    &_active {
+      p {
+        color: var.$text-primary-light;
+      }
+
+    }
+  }
+
+  &__button {
+    cursor: pointer;
+    background-color: transparent;
+    color: var.$text-dark-grey;
+    border: 0;
+  }
+}

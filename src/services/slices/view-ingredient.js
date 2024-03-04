@@ -8,6 +8,9 @@ export const viewIngredientSlice = createSlice({
   initialState: ingredientsInitialState,
   reducers: {
     open: (state, action) => action.payload,
-    close: (state) => null
+    close: (state) => null,
+    set: (state, action) => {
+      return action.payload;
+    },
   }
 });

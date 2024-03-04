@@ -4,7 +4,7 @@ import { checkResponse } from './api-helpers';
 /**
  * Получаем список ингредиентов
  */
-export const getIngredients = () => {
+export const getIngredientsRequest = () => {
   return fetch(`${API_URL}/ingredients`)
     .then(checkResponse)
 }
@@ -13,14 +13,14 @@ export const getIngredients = () => {
  * Функция создает заказ
  * @param ingredients - массив с _id всех ингредиентов
  */
-export const createOrderReq = (ingredients2) => {
+export const createOrderRequest = (ingredients) => {
   return fetch(`${API_URL}/orders`, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      ingredients: ingredients2
+      ingredients: ingredients
     })
   })
     .then(checkResponse)

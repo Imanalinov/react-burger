@@ -58,7 +58,7 @@ const BurgerConstructor = () => {
           ${isOver ? styles.over : ''}
         `}
         ref={dropRef}>
-        <ul>
+        <ul className={styles.ul}>
           {selectedIngredients.ingredients.map((ingredient, index) => (
             ingredient && <li
               key={ingredient.uniqueId}

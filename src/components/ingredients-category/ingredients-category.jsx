@@ -1,8 +1,8 @@
 import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
-import styles from './ingredients-category.module.scss';
 import PropTypes from 'prop-types';
 import { ingredientType } from '../../utils/ingredient-prop-type';
-import { useEffect, useRef } from 'react';
+
+import styles from './ingredients-category.module.scss';
 
 const IngredientsCategory = ({ categoryName, ingredients }) => {
   return (

@@ -1,19 +1,17 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients-item.module.scss';
 import { ingredientType } from '../../utils/ingredient-prop-type';
-import Modal from '../../dialog/modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { viewIngredientSlice } from '../../services/slices/view-ingredient';
 import { useDrag } from 'react-dnd';
 import { ingredientDraggingSlice } from '../../services/slices/ingredient-dragging';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
 const BurgerIngredientsItem = ({ ingredient }) => {
   const viewIngredient = useSelector(store => store.viewIngredient);
-  const { open, close } = viewIngredientSlice.actions;
   const actions = ingredientDraggingSlice.actions;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [{ isDragging, canDrop }, dragRef] = useDrag({
     type: ingredient.type,
@@ -31,14 +29,15 @@ const BurgerIngredientsItem = ({ ingredient }) => {
     if (!isDragging && canDrop) {
       dispatch(actions.drop());
     }
-  }, [isDragging]);
-
-  const handleCloseIngredientModal = () => {
-    dispatch(close());
-  };
+  }, [isDragging]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleItemClick = () => {
-    dispatch(open(ingredient));
+    navigate({
+      pathname: `/ingredients/${ingredient._id}`,
+      search: createSearchParams({
+        from: 'main_page'
+      }).toString()
+    });
   };
 
   return (
@@ -64,16 +63,6 @@ const BurgerIngredientsItem = ({ ingredient }) => {
           {ingredient.name}
         </p>
       </div>
-
-      {
-        !!viewIngredient &&
-        <Modal
-          closeAction={handleCloseIngredientModal}
-          title="Детали ингредиента"
-        >
-          <IngredientDetails />
-        </Modal>
-      }
     </>
 
   );

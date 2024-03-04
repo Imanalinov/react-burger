@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { createOrderReq } from '../../utils/burger-api';
+import { createOrderRequest } from '../../utils/burger-api';
 
 export const createdOrderInitialState = {
   loading: false,
@@ -12,7 +12,7 @@ export const createOrderAPI = createAsyncThunk(
   'CREATED_ORDER/API',
   async (selectedIds, thunkAPI) => {
     try {
-      return await createOrderReq(selectedIds);
+      return await createOrderRequest(selectedIds);
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message});
     }

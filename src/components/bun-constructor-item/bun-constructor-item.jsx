@@ -28,8 +28,9 @@ export const BunConstructorItem = ({ isTop }) => {
 
 
   return (
-    <ul className={`${isTop ? 'mb-4' : 'mt-4'} pr-6`}>
+    <ul className={`${isTop ? 'mb-4' : 'mt-4'} pr-6 ${styles.ul}`}>
       <li
+        className={styles.li}
         ref={bunDropTarget}
       >
         {
