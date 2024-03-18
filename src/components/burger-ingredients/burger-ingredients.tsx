@@ -3,29 +3,32 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsCategory from '../ingredients-category/ingredients-category';
 import { useSelector } from 'react-redux';
+import { IIngredient } from '../../models';
+import { IStoreState } from '../../models/store.model';
+import { IIngredientsState } from '../../services/slices/ingredients';
 
 const BurgerIngredients = () => {
   const [currentTab, setCurrentTab] = useState('bun');
-  const ingredients = useSelector(store => store.ingredients);
-  const ref = useRef();
+  const ingredients = useSelector<IStoreState, IIngredientsState>(store => store.ingredients);
+  const ref = useRef<HTMLDivElement>(null);
 
-  const buns = useMemo(() => ingredients.data.filter((item) => item.type === 'bun'), [ingredients]);
-  const mains = useMemo(() => ingredients.data.filter((item) => item.type === 'main'), [ingredients]);
-  const sauces = useMemo(() => ingredients.data.filter((item) => item.type === 'sauce'), [ingredients]);
+  const buns = useMemo(() => ingredients.data.filter((item: IIngredient) => item.type === 'bun'), [ingredients]);
+  const mains = useMemo(() => ingredients.data.filter((item: IIngredient) => item.type === 'main'), [ingredients]);
+  const sauces = useMemo(() => ingredients.data.filter((item: IIngredient) => item.type === 'sauce'), [ingredients]);
 
-  const onTabClick = (event) => {
+  const onTabClick = (event: string) => {
     setCurrentTab(event);
     let el;
 
     if (event === 'bun') {
       el = 0;
     } else if (event === 'sauce') {
-      el = ref.current.childNodes[0].offsetTop - 20;
+      el = (ref.current!.childNodes[0] as HTMLElement).offsetTop - 20;
     } else {
-      el = ref.current.childNodes[1].offsetTop + ref.current.childNodes[0].offsetTop - 80;
+      el = (ref.current!.childNodes[1] as HTMLElement).offsetTop + (ref.current!.childNodes[0] as HTMLElement).offsetTop - 80;
     }
 
-    ref.current.scrollTo({
+    ref.current!.scrollTo({
       behavior: "smooth",
       left: 0,
       top: el
@@ -34,7 +37,7 @@ const BurgerIngredients = () => {
   };
 
   useEffect(() => {
-    const scrollHandler = (event) => {
+    const scrollHandler = (event: any) => {
       const scrollTop = event.srcElement.scrollTop;
       const childHeight1 = event.srcElement.childNodes[0].clientHeight;
       const childHeight2 = event.srcElement.childNodes[1].clientHeight;
@@ -53,9 +56,9 @@ const BurgerIngredients = () => {
 
     const element = ref.current;
 
-    element.addEventListener('scroll', scrollHandler);
+    element!.addEventListener('scroll', scrollHandler);
     return () => {
-      element.removeEventListener('scroll', scrollHandler);
+      element!.removeEventListener('scroll', scrollHandler);
     }
   }, []);
 

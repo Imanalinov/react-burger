@@ -21,7 +21,7 @@ export const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigator = useNavigate();
 
-  const onSubmit = async (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (form.name.length && form.email.length && form.password.length && validateEmail(form.email)) {
       // @ts-ignore

@@ -22,10 +22,10 @@ export const BunConstructorItem: React.FC<Props> = ({ isTop }) => {
 
   const [{ isHover }, bunDropTarget] = useDrop({
     accept: 'bun',
-    drop(item: IIngredient) {
+    drop(item: { ingredient: IIngredient }) {
       bun && dispatch(decreaseBun(bun));
-      dispatch(add({ ingredient: item }));
-      dispatch(increaseBun({ ingredient: item }));
+      dispatch(add(item));
+      dispatch(increaseBun(item));
     },
     collect: monitor => ({
       isHover: monitor.isOver()

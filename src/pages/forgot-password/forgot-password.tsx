@@ -1,13 +1,15 @@
 import styles from './forgot-password.module.scss';
 
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+
 import { IRestorePasswordState, restorePasswordSlice } from '../../services/slices/restore-password';
 import { validateEmail } from '../../utils/validators';
 import { forgotPasswordAPI } from '../../services/actions/restore-password';
 import { IStoreState } from '../../models/store.model';
-import React from 'react';
 
 
 export const ForgotPasswordPage = () => {
@@ -20,7 +22,7 @@ export const ForgotPasswordPage = () => {
     dispatch(forgotPasswordSetValue(target.value));
   };
 
-  const onSubmit = (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (validateEmail(email)) {
       // @ts-ignore

@@ -1,10 +1,12 @@
+import styles from './login.module.scss';
+
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-import styles from './login.module.scss';
-import { validateEmail } from '../../utils/validators';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { validateEmail } from '../../utils/validators';
 import { loginAPI } from '../../services/actions/user';
 import { useForm } from '../../hooks/use-form-hook';
 import { IStoreState } from '../../models/store.model';
@@ -27,7 +29,7 @@ export const LoginPage = () => {
     }
   }, [userState.user]);
 
-  const onSubmit = (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (form.email.length && form.password.length && validateEmail(form.email)) {
       // @ts-ignore

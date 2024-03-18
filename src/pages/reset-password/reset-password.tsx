@@ -1,9 +1,11 @@
-import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useEffect } from 'react';
-
 import styles from './reset-password.module.scss';
+
+import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import React, { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { IRestorePasswordState, restorePasswordSlice } from '../../services/slices/restore-password';
 import { resetPasswordAPI } from '../../services/actions/restore-password';
 import { IStoreState } from '../../models/store.model';
@@ -28,7 +30,7 @@ export const ResetPasswordPage = () => {
     }));
   };
 
-  const onSubmit = (event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (password.length && token.length) {
       // @ts-ignore

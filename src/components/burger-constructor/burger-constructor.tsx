@@ -25,9 +25,9 @@ const BurgerConstructor = () => {
 
   const [{ isOver }, dropRef] = useDrop({
     accept: ['main', 'sauce'],
-    drop(item: IIngredient) {
-      dispatch(add({ ingredient: item }));
-      dispatch(increaseSelectedIngredient({ ingredient: item }));
+    drop(item: { ingredient: IIngredient }) {
+      dispatch(add(item));
+      dispatch(increaseSelectedIngredient(item));
     },
     collect: monitor => ({
       isOver: monitor.isOver()
