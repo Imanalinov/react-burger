@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { getAccessToken } from '../../utils/token';
 import { getUserAPI } from '../../services/actions/user';
 import {
@@ -10,16 +9,15 @@ import {
 import { UnauthorizedUserGuard } from '../../guards/unauthorized-user';
 import { AuthorizedUserGuard } from '../../guards/authorized-user';
 import { Wrapper } from '../wrapper/wrapper';
-import { IStoreState } from '../../models/store.model';
+import { useDispatch, useSelector } from '../../models/store.model';
 
 function App() {
   const dispatch = useDispatch();
-  const accessTokenState = useSelector<IStoreState>(store => store.user.accessToken);
+  const accessTokenState = useSelector(store => store.user.accessToken);
 
   React.useEffect(() => {
     const accessToken = accessTokenState || getAccessToken();
     if (accessToken) {
-      // @ts-ignore
       dispatch(getUserAPI())
     }
   }, [dispatch]);

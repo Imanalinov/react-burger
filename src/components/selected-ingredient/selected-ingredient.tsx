@@ -3,8 +3,8 @@ import styles from './selected-ingredient.module.scss';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
 
+import { useDispatch } from '../../models/store.model';
 import { selectedIngredientsSlice } from '../../services/slices/selected-ingredients';
 import { ingredientsSlice } from '../../services/slices/ingredients';
 import { IIngredient } from '../../models';

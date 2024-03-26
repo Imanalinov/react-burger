@@ -3,12 +3,12 @@ import styles from './register.module.scss';
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { validateEmail } from '../../utils/validators';
 import { createUserAPI } from '../../services/actions/user';
 import { useForm } from '../../hooks/use-form-hook';
+import { useDispatch } from '../../models/store.model';
 
 const formInitialState = {
   name: '',
@@ -24,7 +24,6 @@ export const RegisterPage = () => {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (form.name.length && form.email.length && form.password.length && validateEmail(form.email)) {
-      // @ts-ignore
       dispatch(createUserAPI(form))
         .then(() => {
           navigator('/profile');

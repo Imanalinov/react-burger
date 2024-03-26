@@ -1,11 +1,24 @@
-import { ingredientsInitialState, ingredientsSlice } from './ingredients';
+import { ingredientsInitialState, ingredientsSlice, TIngredientsActions } from './ingredients';
 import { combineReducers } from 'redux';
-import { selectedIngredientsInitialState, selectedIngredientsSlice } from './selected-ingredients';
-import { viewIngredientInitialState, viewIngredientSlice } from './view-ingredient';
-import { createdOrderInitialState, createdOrderSlice } from './created-order';
-import { ingredientDraggingInitialState, ingredientDraggingSlice } from './ingredient-dragging';
-import { userInitialState, userSlice } from './user';
-import { restorePasswordInitialState, restorePasswordSlice } from './restore-password';
+import {
+  selectedIngredientsInitialState, selectedIngredientsSlice, TSelectedIngredientsActions
+} from './selected-ingredients';
+import { TViewIngredientActions, viewIngredientInitialState, viewIngredientSlice } from './view-ingredient';
+import { createdOrderInitialState, createdOrderSlice, TCreateOrderActions } from './created-order';
+import {
+  ingredientDraggingInitialState, ingredientDraggingSlice, TIngredientDraggingActions
+} from './ingredient-dragging';
+import { TUserActions, userInitialState, userSlice } from './user';
+import { restorePasswordInitialState, restorePasswordSlice, TRestorePasswordActions } from './restore-password';
+
+export type TRootActions =
+  TCreateOrderActions |
+  TIngredientDraggingActions |
+  TIngredientsActions |
+  TRestorePasswordActions |
+  TSelectedIngredientsActions |
+  TUserActions |
+  TViewIngredientActions;
 
 
 export const initialState = {

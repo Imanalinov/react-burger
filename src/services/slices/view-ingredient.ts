@@ -1,5 +1,6 @@
 import { CaseReducer, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IIngredient } from '../../models';
+import { SliceActions } from '../../utils/actions-type';
 
 export interface IViewIngredientState {
   item: IIngredient | null;
@@ -20,3 +21,5 @@ export const viewIngredientSlice = createSlice({
     close
   }
 });
+
+export type TViewIngredientActions = SliceActions<typeof viewIngredientSlice.actions>;

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getIngredientsRequest } from '../../utils/burger-api';
 import { IIngredient } from '../../models';
+import { SliceActions } from '../../utils/actions-type';
 
 export interface IIngredientsState {
   loading: boolean;
@@ -108,3 +109,5 @@ export const ingredientsSlice = createSlice({
     });
   }
 });
+
+export type TIngredientsActions = SliceActions<typeof ingredientsSlice.actions>;

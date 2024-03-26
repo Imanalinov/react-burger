@@ -1,25 +1,23 @@
 import styles from './profile.module.scss';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserAPI, logoutAPI } from '../../services/actions/user';
+
 import { EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useEffect, useState } from 'react';
-import { IStoreState } from '../../models/store.model';
-import { IUserState } from '../../services/slices/user';
+import { NavLink, useNavigate } from 'react-router-dom';
+
+import { getUserAPI, logoutAPI } from '../../services/actions/user';
+import { useDispatch, useSelector } from '../../models/store.model';
 
 export const ProfilePage: React.FC = (): React.ReactElement | null => {
-  const userState = useSelector<IStoreState, IUserState>(store => store.user);
+  const userState = useSelector(store => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [password, setPassword] = useState('******');
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getUserAPI());
   }, [dispatch])
 
   const onLeave = () => {
-    // @ts-ignore
     dispatch(logoutAPI()).then(() => {
       navigate('/', { replace: true });
     })

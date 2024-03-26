@@ -1,21 +1,21 @@
-import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './bun-constructor-item.module.scss';
+
+import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react';
 import { useDrop } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
-import { ISelectedIngredientsState, selectedIngredientsSlice } from '../../services/slices/selected-ingredients';
+
+import { selectedIngredientsSlice } from '../../services/slices/selected-ingredients';
 import { ingredientsSlice } from '../../services/slices/ingredients';
-import { IStoreState } from '../../models/store.model';
-import { IIngredientDraggingState } from '../../services/slices/ingredient-dragging';
 import { IIngredient } from '../../models';
+import { useDispatch, useSelector } from '../../models/store.model';
 
 interface Props {
   isTop: boolean;
 }
 
 export const BunConstructorItem: React.FC<Props> = ({ isTop }) => {
-  const { bun } = useSelector<IStoreState, ISelectedIngredientsState>(store => store.selectedIngredients);
-  const draggingState = useSelector<IStoreState, IIngredientDraggingState>(store => store.ingredientDragging);
+  const bun = useSelector(store => store.selectedIngredients.bun);
+  const draggingState = useSelector(store => store.ingredientDragging);
   const { add } = selectedIngredientsSlice.actions;
   const { decreaseBun, increaseBun } = ingredientsSlice.actions;
   const dispatch = useDispatch();

@@ -1,6 +1,7 @@
 import { ActionReducerMapBuilder, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createUserAPI, getUserAPI, loginAPI, logoutAPI, updateTokenAPI } from '../actions/user';
 import { IGetUser, IUpdateToken, IUser, IUserData } from '../../models';
+import { SliceActions } from '../../utils/actions-type';
 
 export interface IUserState {
   loading: boolean;
@@ -118,3 +119,5 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: extraReducers,
 });
+
+export type TUserActions = SliceActions<typeof userSlice.actions>;

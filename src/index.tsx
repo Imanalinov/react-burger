@@ -6,10 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { initialState, rootReducer } from './services/slices';
-import { IStoreState } from './models/store.model';
 
+export type TRootState = ReturnType<typeof store.getState>;
 
-const store = configureStore<IStoreState>({
+export type TAppDispatch = typeof store.dispatch;
+
+const store = configureStore({
   reducer: rootReducer,
   middleware: getDefaultMiddleware => getDefaultMiddleware(),
   devTools: true,

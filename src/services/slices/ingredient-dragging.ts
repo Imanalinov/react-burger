@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IIngredient } from '../../models';
+import { SliceActions } from '../../utils/actions-type';
 
 export interface IIngredientDraggingState {
   item: IIngredient | null;
@@ -24,3 +25,5 @@ export const ingredientDraggingSlice = createSlice({
     }
   }
 });
+
+export type TIngredientDraggingActions = SliceActions<typeof ingredientDraggingSlice.actions>;
