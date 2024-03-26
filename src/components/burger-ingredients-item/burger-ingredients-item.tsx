@@ -1,19 +1,20 @@
 import styles from './burger-ingredients-item.module.scss';
+
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import { createSearchParams, useNavigate } from 'react-router-dom';
+
 import { ingredientDraggingSlice } from '../../services/slices/ingredient-dragging';
-import { IStoreState } from '../../models/store.model';
 import { IIngredient } from '../../models';
+import { useDispatch, useSelector } from '../../models/store.model';
 
 interface Props {
   ingredient: IIngredient;
 }
 
 const BurgerIngredientsItem: React.FC<Props> = ({ ingredient }) => {
-  const viewIngredient = useSelector<IStoreState, IIngredient | null>(store => store.viewIngredient.item);
+  const viewIngredient = useSelector(store => store.viewIngredient.item);
   const actions = ingredientDraggingSlice.actions;
   const dispatch = useDispatch();
   const navigate = useNavigate();

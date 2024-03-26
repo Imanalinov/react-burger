@@ -1,0 +1,60 @@
+@use "../../styles/variable" as *;
+
+$h-height: 36px * 1.1;
+
+.aqua {
+  color: #00CCCC;
+}
+
+.component {
+  height: calc(100vh - $header-height);
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+
+  height: calc(100% - $h-height);
+}
+
+.order {
+  height: 100%;
+  overflow-x: auto;
+  flex-basis: 50%;
+}
+
+.order_list {
+  padding-bottom: 10px;
+
+  & > li {
+    margin-top: 16px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+.desk {
+  flex-basis: 50%;
+}
+
+.desk__table {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 36px;
+
+  & > div {
+    flex-basis: 50%;
+  }
+}
+
+.desk__grid {
+  margin-top: 24px;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 8px 20px;
+  grid-template-rows: repeat(5, 28px * 1.1);
+}

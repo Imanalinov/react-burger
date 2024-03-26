@@ -2,6 +2,10 @@
   display: flex;
 }
 
+.inline {
+  display: inline;
+}
+
 .h-screen {
   height: 100vh;
 }
@@ -24,4 +28,8 @@
 
 .color-link {
   color: #4C4CFF;
+}
+
+.justify-between {
+  justify-content: space-between;
 }

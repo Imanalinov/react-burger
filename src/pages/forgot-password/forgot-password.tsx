@@ -3,17 +3,16 @@ import styles from './forgot-password.module.scss';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { IRestorePasswordState, restorePasswordSlice } from '../../services/slices/restore-password';
+import { restorePasswordSlice } from '../../services/slices/restore-password';
 import { validateEmail } from '../../utils/validators';
 import { forgotPasswordAPI } from '../../services/actions/restore-password';
-import { IStoreState } from '../../models/store.model';
+import { useDispatch, useSelector } from '../../models/store.model';
 
 
 export const ForgotPasswordPage = () => {
-  const { email, forgotPassword } = useSelector<IStoreState, IRestorePasswordState>(store => store.restorePassword);
+  const { email, forgotPassword } = useSelector(store => store.restorePassword);
   const { forgotPasswordSetValue } = restorePasswordSlice.actions;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,10 +24,9 @@ export const ForgotPasswordPage = () => {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (validateEmail(email)) {
-      // @ts-ignore
       dispatch(forgotPasswordAPI(email))
-        // @ts-ignore
         .then((res) => {
+          // @ts-ignore
           if (res.error) {
             return;
           }

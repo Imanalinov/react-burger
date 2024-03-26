@@ -1,15 +1,15 @@
 import styles from './burger-ingredients.module.scss';
+
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import IngredientsCategory from '../ingredients-category/ingredients-category';
-import { useSelector } from 'react-redux';
 import { IIngredient } from '../../models';
-import { IStoreState } from '../../models/store.model';
-import { IIngredientsState } from '../../services/slices/ingredients';
+import { useSelector } from '../../models/store.model';
 
 const BurgerIngredients = () => {
   const [currentTab, setCurrentTab] = useState('bun');
-  const ingredients = useSelector<IStoreState, IIngredientsState>(store => store.ingredients);
+  const ingredients = useSelector(store => store.ingredients);
   const ref = useRef<HTMLDivElement>(null);
 
   const buns = useMemo(() => ingredients.data.filter((item: IIngredient) => item.type === 'bun'), [ingredients]);

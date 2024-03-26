@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import uniqueId from 'lodash/uniqueId';
 import { IIngredient } from '../../models';
+import { SliceActions } from '../../utils/actions-type';
 
 export interface ISelectedIngredientsState {
   totalPrice: number;
@@ -93,3 +94,5 @@ export const selectedIngredientsSlice = createSlice({
     reset: (_: ISelectedIngredientsState) => selectedIngredientsInitialState
   }
 });
+
+export type TSelectedIngredientsActions = SliceActions<typeof selectedIngredientsSlice.actions>;
