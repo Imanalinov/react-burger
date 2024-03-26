@@ -1,8 +1,7 @@
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as React from 'react';
-import { useEffect } from 'react';
-import { IStoreState } from '../models/store.model';
+
+import { useSelector } from '../models/store.model';
 
 interface Props {
   element: React.JSX.Element
@@ -13,7 +12,7 @@ interface Props {
  * то мы перенаправляем его на страницу авторизации
  */
 export const AuthorizedUserGuard = ({ element }: Props) => {
-  const isLogged = useSelector<IStoreState>(store => store.user.isLogged);
+  const isLogged = useSelector(store => store.user.isLogged);
   const navigate = useNavigate();
 
   useEffect(() => {

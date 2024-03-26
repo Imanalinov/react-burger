@@ -1,0 +1,19 @@
+@use "../../styles/variable" as *;
+
+.order {
+  height: calc(100vh - $header-height - 120px - 20px);
+  overflow-x: auto;
+  flex-basis: 50%;
+}
+
+.order_list {
+  padding-bottom: 10px;
+
+  & > li {
+    margin-top: 16px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}

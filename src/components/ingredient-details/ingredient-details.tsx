@@ -1,10 +1,9 @@
 import styles from './ingredient-details.module.scss';
-import { useSelector } from 'react-redux';
-import { IStoreState } from '../../models/store.model';
-import { IViewIngredientState } from '../../services/slices/view-ingredient';
+
+import { useSelector } from '../../models/store.model';
 
 const IngredientDetails = () => {
-  const { item } = useSelector<IStoreState, IViewIngredientState>(store => store.viewIngredient);
+  const { item } = useSelector(store => store.viewIngredient);
 
   return (
     item &&

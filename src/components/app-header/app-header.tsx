@@ -1,13 +1,12 @@
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link } from 'react-router-dom';
+
 import styles from './app-header.module.scss';
 import AppHeaderLink from '../app-header-link/app-header-link';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { IStoreState } from '../../models/store.model';
-import { IUserState } from '../../services/slices/user';
+import { useSelector } from '../../models/store.model';
 
 const AppHeader = () => {
-  const userState = useSelector<IStoreState, IUserState>(store => store.user);
+  const userState = useSelector(store => store.user);
 
   return (
     <nav className={styles.header}>
@@ -21,7 +20,7 @@ const AppHeader = () => {
         <AppHeaderLink
           text='Лента заказов'
           icon={<ListIcon  type="secondary" />}
-          to={'/'}
+          to={'/order-feed'}
         />
       </div>
 

@@ -1,26 +1,26 @@
-import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.scss';
+
+import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react';
+import { useDrop } from 'react-dnd';
+
 import Modal from '../../dialog/modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { useDispatch, useSelector } from 'react-redux';
-import { createdOrderSlice, createOrderAPI, ICreateOrderState } from '../../services/slices/created-order';
-import { ISelectedIngredientsState, selectedIngredientsSlice } from '../../services/slices/selected-ingredients';
+import { createdOrderSlice, createOrderAPI } from '../../services/slices/created-order';
+import { selectedIngredientsSlice } from '../../services/slices/selected-ingredients';
 import { BunConstructorItem } from '../bun-constructor-item/bun-constructor-item';
 import { SelectedIngredient } from '../selected-ingredient/selected-ingredient';
-import { useDrop } from 'react-dnd';
 import { ingredientsSlice } from '../../services/slices/ingredients';
 import { IIngredient } from '../../models';
-import { IStoreState } from '../../models/store.model';
-import { IIngredientDraggingState } from '../../services/slices/ingredient-dragging';
+import { useDispatch, useSelector } from '../../models/store.model';
 
 const BurgerConstructor = () => {
   const { increaseSelectedIngredient, resetCount } = ingredientsSlice.actions;
-  const selectedIngredients = useSelector<IStoreState, ISelectedIngredientsState>(store => store.selectedIngredients);
+  const selectedIngredients = useSelector(store => store.selectedIngredients);
   const { add, reset } = selectedIngredientsSlice.actions;
-  const createdOrder = useSelector<IStoreState, ICreateOrderState>(store => store.createdOrder);
+  const createdOrder = useSelector(store => store.createdOrder);
   const { closeModal } = createdOrderSlice.actions;
-  const draggingState = useSelector<IStoreState, IIngredientDraggingState>(store => store.ingredientDragging);
+  const draggingState = useSelector(store => store.ingredientDragging);
   const dispatch = useDispatch();
 
   const [{ isOver }, dropRef] = useDrop({
@@ -47,7 +47,6 @@ const BurgerConstructor = () => {
     const selectedIds = selectedIngredients.ingredients.map((item) => item._id);
     selectedIds.push(selectedIngredients.bun._id);
 
-    // @ts-ignore
     dispatch(createOrderAPI(selectedIds));
   };
 
