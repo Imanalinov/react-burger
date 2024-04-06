@@ -1,8 +1,10 @@
 import styles from './order-feed.module.scss';
 
+import React, { useEffect, useState } from 'react';
+import { createSearchParams, useNavigate } from 'react-router-dom';
+
 import { useSocket } from '../../hooks/use-socket';
-import { useEffect, useState } from 'react';
-import { IOrderList } from '../../models/profile.model';
+import { IOrderItem, IOrderList } from '../../models/profile.model';
 import { ProfileOrderItemComponent } from '../../components/order-item';
 import { numberWithSpaces } from '../../utils/pipes';
 
@@ -51,10 +53,20 @@ export function OrderFeedPage() {
   const [orders, setOrders] = useState<IOrderList>();
   const [doneOrders, setDoneOrders] = useState<number[]>([]);
   const [workOrders, setWorkOrders] = useState<number[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     connect('');
   }, []);
+
+  const toOrderInformationPage = (order: IOrderItem) => {
+    navigate({
+      pathname: `/order-feed/${order.number}`,
+      search: createSearchParams({
+        from: 'order_feed'
+      }).toString()
+    });
+  }
 
   return (
     <div className={styles.component}>
@@ -65,7 +77,10 @@ export function OrderFeedPage() {
         <div className={styles.order}>
           <ul className={styles.order_list}>
             {orders?.orders.map(order => (
-              <li key={order.number}>
+              <li
+                key={order.number}
+                onClick={() => toOrderInformationPage(order)}
+              >
                 <ProfileOrderItemComponent
                   order={order}
                 />

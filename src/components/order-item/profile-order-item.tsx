@@ -9,7 +9,7 @@ interface Props {
   order: IOrderItem;
 }
 
-function getStatusName(status: 'done' | 'created' | 'pending' | string): string {
+export function getStatusName(status: 'done' | 'created' | 'pending' | string): string {
   switch (status) {
     case 'done':
       return 'Выполнен';

@@ -4,7 +4,7 @@ import { getAccessToken } from '../../utils/token';
 import { getUserAPI } from '../../services/actions/user';
 import {
   ForgotPasswordPage, IngredientDetailsPage, LoginPage, MainPage, OrderFeedPage, OrderInformationPage,
-  ProfileOrdersNumberPage, ProfileOrdersPage, ProfilePage, RegisterPage, ResetPasswordPage
+  ProfileOrdersPage, ProfilePage, RegisterPage, ResetPasswordPage
 } from '../../pages';
 
 import { UnauthorizedUserGuard } from '../../guards/unauthorized-user';
@@ -40,11 +40,12 @@ function App() {
             path="/order-feed"
             element={<OrderFeedPage />}
           />
-          <Route path="/order-feed/:id">
-            <AuthorizedUserGuard>
-              <OrderInformationPage />
-            </AuthorizedUserGuard>
-          </Route>
+          <Route
+            path="order-feed/:id"
+            element={
+              <OrderInformationPage page="orderFeed" />
+            }
+          />
           <Route
             path="/login"
             element={
@@ -87,18 +88,11 @@ function App() {
                 <AuthorizedUserGuard element={<ProfileOrdersPage />} />
               }
             />
-            <Route
-              path="/profile/order/:number"
-              element={
-                <AuthorizedUserGuard element={<ProfileOrdersNumberPage />} />
-              }
-            />
-            <Route path="/profile/orders/:id">
-              <AuthorizedUserGuard>
-                <OrderInformationPage />
-              </AuthorizedUserGuard>
-            </Route>
           </Route>
+          <Route path="/profile/orders/:id" element={
+            <AuthorizedUserGuard element={< OrderInformationPage page="profile" />}/>
+          }
+          />
           <Route
             path="ingredients/:id"
             element={

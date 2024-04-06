@@ -6,6 +6,5 @@ export * from './order-feed';
 export * from './order-information';
 export * from './profile';
 export * from './profile-orders';
-export * from './profile-orders-number';
 export * from './register';
 export * from './reset-password';

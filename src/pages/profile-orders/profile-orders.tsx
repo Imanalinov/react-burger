@@ -5,28 +5,20 @@ import { useEffect, useState } from 'react';
 import { useSocket } from '../../hooks/use-socket';
 import { getAccessToken } from '../../utils/token';
 import { ProfileOrderItemComponent } from '../../components/order-item';
-import { IOrderList } from '../../models/profile.model';
+import { IOrderItem, IOrderList } from '../../models/profile.model';
 import { useSelector } from '../../models/store.model';
-import uniqueId from 'lodash/uniqueId';
+import { setOrderIngredients } from '../../utils/set-order-ingredients';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
 export function ProfileOrdersPage() {
   const ingredients = useSelector(store => store.ingredients);
+  const navigate = useNavigate();
 
   const socket = useSocket('wss://norma.nomoreparties.space/orders', {
     onMessage: ((event: MessageEvent<string>) => {
-      const orders: IOrderList = JSON.parse(event.data);
-
-      orders.orders.forEach((order) => {
-        order.ingredients.forEach((orderIngredient) => {
-          if (!order.fullIngredients) {
-            order.fullIngredients = [];
-          }
-          const ingredient = JSON.parse(JSON.stringify(ingredients.ingredientsMap[orderIngredient]));
-          ingredient.uniqueId = uniqueId(order.number.toString());
-          order.fullIngredients.push(ingredient);
-          order.sum = order.sum !== undefined ? order.sum + ingredient.price : 0;
-        })
-      });
+     const orders = setOrderIngredients(
+       ingredients.ingredientsMap, JSON.parse(event.data)
+     );
 
       setMyOrders(orders)
     }),
@@ -40,12 +32,24 @@ export function ProfileOrdersPage() {
     }
   }, [ingredients.loading])
 
+  const toOrderInformationPage = (order: IOrderItem) => {
+    navigate({
+      pathname: `/profile/orders/${order.number}`,
+      search: createSearchParams({
+        from: 'order_feed'
+      }).toString()
+    });
+  }
+
   return (
     <div>
       <div className={styles.order}>
         <ul className={styles.order_list}>
           {myOrders?.orders.map(order => (
-            <li key={order.number}>
+            <li
+              key={order.number}
+              onClick={() => toOrderInformationPage(order)}
+            >
               <ProfileOrderItemComponent
                 order={order}
               />
