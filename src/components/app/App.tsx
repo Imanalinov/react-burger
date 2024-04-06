@@ -3,17 +3,15 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { getAccessToken } from '../../utils/token';
 import { getUserAPI } from '../../services/actions/user';
 import {
-  ForgotPasswordPage, IngredientDetailsPage, LoginPage, MainPage, ProfilePage, RegisterPage, ResetPasswordPage
+  ForgotPasswordPage, IngredientDetailsPage, LoginPage, MainPage, OrderFeedPage, OrderInformationPage,
+  ProfileOrdersNumberPage, ProfileOrdersPage, ProfilePage, RegisterPage, ResetPasswordPage
 } from '../../pages';
 
 import { UnauthorizedUserGuard } from '../../guards/unauthorized-user';
 import { AuthorizedUserGuard } from '../../guards/authorized-user';
 import { Wrapper } from '../wrapper/wrapper';
 import { useDispatch, useSelector } from '../../models/store.model';
-import { ProfileOrdersPage } from '../../pages/profile-orders';
-import { ProfileOrdersNumberPage } from '../../pages/profile-orders-number';
 import { ProfileWrapperComponent } from '../profile/profile-wrapper';
-import { OrderFeedPage } from '../../pages/order-feed';
 import { getIngredientsAPI } from '../../services/slices/ingredients';
 
 function App() {
@@ -42,6 +40,11 @@ function App() {
             path="/order-feed"
             element={<OrderFeedPage />}
           />
+          <Route path="/order-feed/:id">
+            <AuthorizedUserGuard>
+              <OrderInformationPage />
+            </AuthorizedUserGuard>
+          </Route>
           <Route
             path="/login"
             element={
@@ -90,6 +93,11 @@ function App() {
                 <AuthorizedUserGuard element={<ProfileOrdersNumberPage />} />
               }
             />
+            <Route path="/profile/orders/:id">
+              <AuthorizedUserGuard>
+                <OrderInformationPage />
+              </AuthorizedUserGuard>
+            </Route>
           </Route>
           <Route
             path="ingredients/:id"
