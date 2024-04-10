@@ -7,6 +7,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import BurgerIngredients from '../../components/burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
 import { useSelector } from '../../models/store.model';
+import { Outlet } from 'react-router-dom';
 
 export const MainPage = () => {
   const ingredients = useSelector(store => store.ingredients);
@@ -24,6 +25,7 @@ export const MainPage = () => {
           </>
         }
       </div>
+      <Outlet />
     </DndProvider>
   );
 };

@@ -8,11 +8,12 @@ import { ProfileOrderItemComponent } from '../../components/order-item';
 import { IOrderItem, IOrderList } from '../../models/profile.model';
 import { useSelector } from '../../models/store.model';
 import { setOrderIngredients } from '../../utils/set-order-ingredients';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function ProfileOrdersPage() {
   const ingredients = useSelector(store => store.ingredients);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const socket = useSocket('wss://norma.nomoreparties.space/orders', {
     onMessage: ((event: MessageEvent<string>) => {
@@ -33,11 +34,10 @@ export function ProfileOrdersPage() {
   }, [ingredients.loading])
 
   const toOrderInformationPage = (order: IOrderItem) => {
-    navigate({
-      pathname: `/profile/orders/${order.number}`,
-      search: createSearchParams({
-        from: 'order_feed'
-      }).toString()
+    navigate(`/profile/orders/${order.number}`, {
+      state: {
+        page: location
+      }
     });
   }
 
@@ -52,6 +52,7 @@ export function ProfileOrdersPage() {
             >
               <ProfileOrderItemComponent
                 order={order}
+                showStatus={true}
               />
             </li>
           ))}

@@ -7,6 +7,7 @@ import { IOrderItem } from '../../models/profile.model';
 
 interface Props {
   order: IOrderItem;
+  showStatus?: boolean;
 }
 
 export function getStatusName(status: 'done' | 'created' | 'pending' | string): string {
@@ -21,7 +22,7 @@ export function getStatusName(status: 'done' | 'created' | 'pending' | string): 
   return 'null';
 }
 
-export function ProfileOrderItemComponent({ order }: Props) {
+export function ProfileOrderItemComponent({ order, showStatus }: Props) {
   const orderTime = useMemo(() => {
     const now = new Date();
     const createDate = new Date(order.createdAt);
@@ -45,16 +46,23 @@ export function ProfileOrderItemComponent({ order }: Props) {
       <p className="text text_type_main-medium mt-6">
         {order.name}
       </p>
-      <p className="text text_type_main-default mt-2">
-        {getStatusName(order.status)}
-      </p>
+      {
+        showStatus && 
+        <p className="text text_type_main-default mt-2">
+          {getStatusName(order.status)}
+        </p>
+      }
       <div className={`mt-6 ${styles.item__bottom}`}>
         {
           order.fullIngredients?.length &&
           <div className={styles.image_container}>
             {
               order.fullIngredients.slice(0, 6).map((ingredient, index) => (
-                <div key={ingredient.uniqueId} className={styles.image_item} style={{zIndex: 100 - (index * 2)}}>
+                <div
+                  key={ingredient.uniqueId}
+                  className={styles.image_item}
+                  style={{zIndex: 100 - (index * 2)}}
+                >
                   <img src={ingredient.image_mobile} alt="" />
                   {
                     index === 5 &&

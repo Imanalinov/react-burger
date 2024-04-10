@@ -55,10 +55,12 @@ export const SelectedIngredient: React.FC<Props> = ({ ingredient, index }) => {
 
   return (
     <div ref={ref} className={`${styles.div} ${isDragging ? styles['ingredient-dragging'] : ''}`}>
-      <DragIcon type="primary" />
+      <div>
+        <DragIcon type="primary" />
+      </div>
       <ConstructorElement
         isLocked={false}
-        text={ingredient.name}
+        text={ingredient.name.slice(0, 10)}
         price={ingredient.price}
         thumbnail={ingredient.image}
         handleClose={deleteHandler}

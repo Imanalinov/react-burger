@@ -26,3 +26,13 @@ $step-height: 56px + 20px;
     }
   }
 }
+
+.tab {
+  overflow-x: auto;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+
+  &::webkit-scrollbar {
+    display: none;
+  }
+}

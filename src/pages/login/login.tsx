@@ -3,7 +3,7 @@ import styles from './login.module.scss';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { validateEmail } from '../../utils/validators';
 import { loginAPI } from '../../services/actions/user';
@@ -20,6 +20,7 @@ export const LoginPage = () => {
   const userState = useSelector(store => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (userState.user) {
@@ -32,9 +33,12 @@ export const LoginPage = () => {
     if (form.email.length && form.password.length && validateEmail(form.email)) {
       dispatch(loginAPI(form))
         .then((res) => {
-          navigate('/profile', {
-            replace: true
-          })
+          navigate(
+            location.state?.prevPage || '/profile',
+            {
+              replace: true
+            }
+          )
         });
     }
   };

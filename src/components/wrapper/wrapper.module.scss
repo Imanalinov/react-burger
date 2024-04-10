@@ -3,3 +3,9 @@
   margin: 0 auto;
   overflow: hidden;
 }
+
+@media screen and  (max-width: 1440px) {
+  .main_container {
+    max-width: 97%;
+  }
+}

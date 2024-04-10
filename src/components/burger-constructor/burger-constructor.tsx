@@ -13,15 +13,18 @@ import { SelectedIngredient } from '../selected-ingredient/selected-ingredient';
 import { ingredientsSlice } from '../../services/slices/ingredients';
 import { IIngredient } from '../../models';
 import { useDispatch, useSelector } from '../../models/store.model';
+import { useNavigate } from 'react-router-dom';
 
 const BurgerConstructor = () => {
-  const { increaseSelectedIngredient, resetCount } = ingredientsSlice.actions;
   const selectedIngredients = useSelector(store => store.selectedIngredients);
-  const { add, reset } = selectedIngredientsSlice.actions;
   const createdOrder = useSelector(store => store.createdOrder);
-  const { closeModal } = createdOrderSlice.actions;
   const draggingState = useSelector(store => store.ingredientDragging);
+  const isLoggedIn = useSelector(store => store.user.isLogged)
+  const { increaseSelectedIngredient, resetCount } = ingredientsSlice.actions;
+  const { add, reset } = selectedIngredientsSlice.actions;
+  const { closeModal } = createdOrderSlice.actions;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [{ isOver }, dropRef] = useDrop({
     accept: ['main', 'sauce'],
@@ -41,6 +44,15 @@ const BurgerConstructor = () => {
   };
 
   const createOrderHandler = () => {
+    if (!isLoggedIn) {
+      navigate(
+        '/login', {
+          state: {
+            prevPage: '/'
+          }
+        }
+      );
+    }
     if (!selectedIngredients.bun) {
       return;
     }
@@ -63,7 +75,9 @@ const BurgerConstructor = () => {
         ref={dropRef}>
         <ul className={styles.ul}>
           {selectedIngredients.ingredients.map((ingredient, index) => (
-            ingredient && <li
+            ingredient &&
+            <li
+              className={"w-full"}
               key={ingredient.uniqueId}
             >
               <SelectedIngredient ingredient={({ ...ingredient, index })} index={index} />

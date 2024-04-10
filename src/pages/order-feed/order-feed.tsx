@@ -1,21 +1,22 @@
 import styles from './order-feed.module.scss';
 
 import React, { useEffect, useState } from 'react';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useSocket } from '../../hooks/use-socket';
 import { IOrderItem, IOrderList } from '../../models/profile.model';
 import { ProfileOrderItemComponent } from '../../components/order-item';
 import { numberWithSpaces } from '../../utils/pipes';
+import { setOrderIngredients } from '../../utils/set-order-ingredients';
+import { useSelector } from '../../models/store.model';
 
 export function OrderFeedPage() {
+  const ingredientsMap = useSelector(store => store.ingredients.ingredientsMap);
   const { connect } = useSocket('wss://norma.nomoreparties.space/orders/all', {
     onMessage: (event: MessageEvent<string>) => {
-      console.log('---------------------------------------------------------------------');
-      console.log(JSON.parse(event.data));
-      console.log('---------------------------------------------------------------------');
-
-      const ordersList: IOrderList = JSON.parse(event.data);
+      const ordersList = setOrderIngredients(
+        ingredientsMap, JSON.parse(event.data)
+      );
       setOrders(ordersList);
       setDoneOrders([]);
       setWorkOrders([]);
@@ -54,17 +55,17 @@ export function OrderFeedPage() {
   const [doneOrders, setDoneOrders] = useState<number[]>([]);
   const [workOrders, setWorkOrders] = useState<number[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     connect('');
   }, []);
 
   const toOrderInformationPage = (order: IOrderItem) => {
-    navigate({
-      pathname: `/order-feed/${order.number}`,
-      search: createSearchParams({
-        from: 'order_feed'
-      }).toString()
+    navigate(`/order-feed/${order.number}`, {
+      state: {
+        page: location
+      }
     });
   }
 

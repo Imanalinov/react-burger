@@ -83,7 +83,7 @@ export const OrderInformationComponent = (props: Props) => {
                 const ing = selectedIngredientsMap[id];
                 return (
                   <li
-                    className={styles.list_item}
+                    className={`${styles.list_item} pr-2`}
                     key={id}
                   >
                     <div className={styles.img_container}>
@@ -92,12 +92,12 @@ export const OrderInformationComponent = (props: Props) => {
                     <p className="text text_type_main-medium grow">
                       {ing.name}
                     </p>
-                    <p className="text text_type_digits-default">
+                    <div className="text text_type_digits-default shrink-0">
                       <div className="flex items-center">
                         <span className="mr-2">{ing.count} x {ing.price}</span>
                         <CurrencyIcon type="primary"/>
                       </div>
-                    </p>
+                    </div>
 
                   </li>
                 )

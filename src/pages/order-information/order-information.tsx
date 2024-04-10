@@ -1,5 +1,4 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import Modal from '../../dialog/modal/modal';
 import React from 'react';
 import { OrderInformationComponent } from '../../components/order-information';
 
@@ -21,15 +20,7 @@ export const OrderInformationPage = (props: Props) => {
   }
 
   return (
-  searchParams.get('from') === 'order_feed' ?
-    <Modal
-      closeAction={handleCloseIngredientModal}
-      title="Детали ингредиента"
-    >
-      <OrderInformationComponent {...props}/>
-    </Modal>
-    :
-    <div className={'mt-30'}>
+    <div className="mt-5">
       <OrderInformationComponent {...props} />
     </div>
   )

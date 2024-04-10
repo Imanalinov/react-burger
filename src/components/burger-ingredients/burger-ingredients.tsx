@@ -65,7 +65,7 @@ const BurgerIngredients = () => {
   return (
     <section className={styles.ingredient}>
       <h1 className={`text text_type_main-large mt-10`}>Соберите бургер</h1>
-      <div className={`mt-5 flex`}>
+      <div className={`mt-5 flex ${styles.tab}`}>
         <Tab value="bun" active={currentTab === 'bun'} onClick={onTabClick}>
           Булки
         </Tab>

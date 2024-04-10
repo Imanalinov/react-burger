@@ -5,6 +5,7 @@ $item-height: 80px;
 $overflow-box-margin-top: 16px;
 $submit-button-height: 64px;
 $submit-button-margin-top: 40px;
+$submit-button-padding-bottom: 20px;
 
 
 .ul {
@@ -13,13 +14,13 @@ $submit-button-margin-top: 40px;
   align-items: flex-end;
   justify-content: center;
   gap: 16px;
-  padding-inline: 16px;
 }
 
 .constructor--submit {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  padding-bottom: $submit-button-padding-bottom;
 }
 
 .overflow {
@@ -28,7 +29,8 @@ $submit-button-margin-top: 40px;
           100vh - $header-height - $section-margin-top -
           $item-height - $overflow-box-margin-top -
           $item-height - $submit-button-margin-top -
-          $submit-button-height - $overflow-box-margin-top
+          $submit-button-height - $overflow-box-margin-top -
+          $submit-button-padding-bottom
   );
 
   &::-webkit-scrollbar {
@@ -66,4 +68,8 @@ $submit-button-margin-top: 40px;
       border-color: chartreuse;
     }
   }
+}
+
+.item {
+  width: 100%;
 }

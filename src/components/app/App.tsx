@@ -1,22 +1,25 @@
 import React from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { getAccessToken } from '../../utils/token';
 import { getUserAPI } from '../../services/actions/user';
 import {
-  ForgotPasswordPage, IngredientDetailsPage, LoginPage, MainPage, OrderFeedPage, OrderInformationPage,
-  ProfileOrdersPage, ProfilePage, RegisterPage, ResetPasswordPage
+  ForgotPasswordPage, LoginPage, MainPage, OrderFeedPage, OrderInformationPage, ProfileOrdersPage, ProfilePage,
+  RegisterPage, ResetPasswordPage
 } from '../../pages';
-
-import { UnauthorizedUserGuard } from '../../guards/unauthorized-user';
-import { AuthorizedUserGuard } from '../../guards/authorized-user';
 import { Wrapper } from '../wrapper/wrapper';
 import { useDispatch, useSelector } from '../../models/store.model';
 import { ProfileWrapperComponent } from '../profile/profile-wrapper';
 import { getIngredientsAPI } from '../../services/slices/ingredients';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import Modal from '../../dialog/modal/modal';
+import { ProtectedRoute } from '../../guards/protected-route';
 
 function App() {
   const dispatch = useDispatch();
   const accessTokenState = useSelector(store => store.user.accessToken);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const page = location.state && location.state.page;
 
   React.useEffect(() => {
     const accessToken = accessTokenState || getAccessToken();
@@ -26,16 +29,16 @@ function App() {
     dispatch(getIngredientsAPI());
   }, [dispatch]);
 
+  const onCloseModal = () => {
+    navigate(-1);
+  };
+
   return (
-    <BrowserRouter>
-      <Routes>
+    <main>
+      <Routes location={page || location}>
         <Route path="/" element={<Wrapper />}>
-          <Route
-            path="/"
-            element={
-              <MainPage />
-            }
-          />
+          <Route path="/" element={<MainPage />} />
+          <Route path='/ingredients/:id' element={<IngredientDetails/>}/>
           <Route
             path="/order-feed"
             element={<OrderFeedPage />}
@@ -49,54 +52,66 @@ function App() {
           <Route
             path="/login"
             element={
-              <UnauthorizedUserGuard element={<LoginPage />} />
+              <ProtectedRoute anonymous={true}>
+                <LoginPage />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/register"
             element={
-              <UnauthorizedUserGuard element={<RegisterPage />} />
+              <ProtectedRoute anonymous={true}>
+                <RegisterPage />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/forgot-password"
             element={
-              <UnauthorizedUserGuard element={<ForgotPasswordPage />} />
+              <ProtectedRoute anonymous={true}>
+                <ForgotPasswordPage />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/reset-password"
             element={
-              <UnauthorizedUserGuard element={<ResetPasswordPage />} />
+              <ProtectedRoute anonymous={true}>
+                <ResetPasswordPage />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/profile"
             element={
-              <AuthorizedUserGuard element={<ProfileWrapperComponent />} />
+              <ProtectedRoute anonymous={false}>
+                <ProfileWrapperComponent />
+              </ProtectedRoute>
             }
           >
             <Route
               path="/profile"
               element={
-                <AuthorizedUserGuard element={<ProfilePage />} />
+                <ProtectedRoute anonymous={false}>
+                  <ProfilePage />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/profile/order"
               element={
-                <AuthorizedUserGuard element={<ProfileOrdersPage />} />
+                <ProtectedRoute anonymous={false}>
+                  <ProfileOrdersPage />
+                </ProtectedRoute>
               }
             />
           </Route>
-          <Route path="/profile/orders/:id" element={
-            <AuthorizedUserGuard element={< OrderInformationPage page="profile" />}/>
-          }
-          />
           <Route
-            path="ingredients/:id"
+            path="/profile/orders/:id"
             element={
-              <IngredientDetailsPage />
+              <ProtectedRoute anonymous={false}>
+                <OrderInformationPage page="profile" />
+              </ProtectedRoute>
             }
           />
         </Route>
@@ -105,7 +120,39 @@ function App() {
           element={<Navigate replace to='/' />}
         />
       </Routes>
-    </BrowserRouter>
+      {
+        page && (
+          <Routes>
+            <Route
+              path='/ingredients/:id'
+               element={
+                 <Modal title={'Детали ингредиента'} closeAction={onCloseModal}>
+                   <IngredientDetails/>
+                 </Modal>
+               }
+            />
+            <Route
+              path="order-feed/:id"
+              element={
+                <Modal title={'Детали ингредиента'} closeAction={onCloseModal}>
+                  <OrderInformationPage page="orderFeed" />
+                </Modal>
+              }
+            />
+            <Route
+              path="/profile/orders/:id"
+              element={
+                <ProtectedRoute anonymous={false}>
+                  <Modal title={'Детали ингредиента'} closeAction={onCloseModal}>
+                    <OrderInformationPage page="profile" />
+                  </Modal>
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        )
+      }
+    </main>
   );
 }
 

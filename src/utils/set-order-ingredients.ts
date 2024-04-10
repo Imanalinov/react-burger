@@ -11,7 +11,6 @@ export function setOrderIngredients(
       if (!order.fullIngredients) {
         order.fullIngredients = [];
       }
-      console.log('ingredient: ', ingredientsMap[orderIngredient]);
       const ingredient = JSON.parse(JSON.stringify(ingredientsMap[orderIngredient]));
       ingredient.uniqueId = uniqueId(order.number.toString());
       order.fullIngredients.push(ingredient);
