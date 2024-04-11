@@ -14,7 +14,9 @@ export type TAppDispatch = typeof store.dispatch;
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware(),
+  middleware: getDefaultMiddleware => getDefaultMiddleware({
+    serializableCheck: false
+  }),
   devTools: true,
   preloadedState: initialState
 });

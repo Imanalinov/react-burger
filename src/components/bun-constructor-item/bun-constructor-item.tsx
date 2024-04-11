@@ -44,7 +44,7 @@ export const BunConstructorItem: React.FC<Props> = ({ isTop }) => {
             <ConstructorElement
               type={isTop ? 'top' : 'bottom'}
               isLocked={true}
-              text={`${bun.name.slice(0, 10)}... ${isTop ? '(верх)' : '(низ)'}`}
+              text={`${bun.name}... ${isTop ? '(верх)' : '(низ)'}`}
               price={bun.price}
               thumbnail={bun.image}
               extraClass={`

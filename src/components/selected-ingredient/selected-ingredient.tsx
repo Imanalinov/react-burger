@@ -38,7 +38,11 @@ export const SelectedIngredient: React.FC<Props> = ({ ingredient, index }) => {
       const dragIndex = item.index;
       const hoverIndex = ingredient.index;
 
-      if (dragIndex === hoverIndex || !dragIndex || !hoverIndex) {
+      if (
+        dragIndex === hoverIndex
+        || dragIndex === undefined
+        || hoverIndex === undefined
+      ) {
         return;
       }
 
@@ -60,7 +64,7 @@ export const SelectedIngredient: React.FC<Props> = ({ ingredient, index }) => {
       </div>
       <ConstructorElement
         isLocked={false}
-        text={ingredient.name.slice(0, 10)}
+        text={ingredient.name}
         price={ingredient.price}
         thumbnail={ingredient.image}
         handleClose={deleteHandler}

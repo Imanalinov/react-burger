@@ -20,24 +20,12 @@ import { ICreateUserRequest, IGetUser, ILoginRequest, IUpdateToken, IUserData } 
  */
 export const loginAPI = createAsyncThunk<IUserData, ILoginRequest>(
   'USER/LOGIN',
-  async (body: ILoginRequest, thunkAPI) => {
-    try {
-      return await loginRequest(body);
-    } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message });
-    }
-  }
+  async (body: ILoginRequest, thunkAPI) => await loginRequest(body)
 );
 
 export const createUserAPI = createAsyncThunk<IUserData, ICreateUserRequest>(
   'USER/REGISTER',
-  async (body: ICreateUserRequest, thunkAPI) => {
-    try {
-      return await createUserRequest(body);
-    } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message });
-    }
-  }
+  async (body: ICreateUserRequest, thunkAPI) => await createUserRequest(body)
 );
 
 /**
@@ -49,13 +37,7 @@ export const createUserAPI = createAsyncThunk<IUserData, ICreateUserRequest>(
  */
 export const updateTokenAPI = createAsyncThunk<IUpdateToken, void>(
   'USER/UPDATE_TOKEN',
-  async (arg, thunkAPI) => {
-    try {
-      return await updateTokenRequest();
-    } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message });
-    }
-  }
+  async (arg, thunkAPI) => await updateTokenRequest()
 );
 
 /**
@@ -69,13 +51,7 @@ export const updateTokenAPI = createAsyncThunk<IUpdateToken, void>(
  */
 export const getUserAPI = createAsyncThunk<IGetUser>(
   'USER/GET_USER',
-  async (_, thunkAPI) => {
-    try {
-      return await getUserRequest() as IGetUser;
-    } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message });
-    }
-  }
+  async (_, thunkAPI) => await getUserRequest() as IGetUser
 );
 
 /**
@@ -86,12 +62,6 @@ export const getUserAPI = createAsyncThunk<IGetUser>(
  */
 export const logoutAPI = createAsyncThunk<boolean>(
   'USER/LOGOUT',
-  async (_, thunkAPI) => {
-    try {
-      return await logoutRequest();
-    } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message });
-    }
-  }
+  async (_, thunkAPI) => await logoutRequest()
 );
 

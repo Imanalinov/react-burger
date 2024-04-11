@@ -6,6 +6,9 @@ export function setOrderIngredients(
   ingredientsMap: Record<string, IIngredient>,
   orderList: IOrderList
 ) {
+  if (!orderList.orders) {
+    return;
+  }
   orderList.orders.forEach((order) => {
     order.ingredients.forEach((orderIngredient) => {
       if (!order.fullIngredients) {

@@ -62,7 +62,7 @@ export function OrderFeedPage() {
   }, []);
 
   const toOrderInformationPage = (order: IOrderItem) => {
-    navigate(`/order-feed/${order.number}`, {
+    navigate(`/feed/${order.number}`, {
       state: {
         page: location
       }

@@ -6,10 +6,10 @@ import AppHeaderLink from '../app-header-link/app-header-link';
 import { useSelector } from '../../models/store.model';
 
 const AppHeader = () => {
-  const userState = useSelector(store => store.user);
+  const isLogged = useSelector(store => store.user.isLogged);
 
   return (
-    <nav className={styles.header}>
+    <header className={styles.header}>
 
       <div className={styles['header--link_wrapper']} >
         <AppHeaderLink
@@ -20,7 +20,7 @@ const AppHeader = () => {
         <AppHeaderLink
           text='Лента заказов'
           icon={<ListIcon  type="secondary" />}
-          to={'/order-feed'}
+          to={'/feed'}
         />
       </div>
 
@@ -34,10 +34,10 @@ const AppHeader = () => {
         <AppHeaderLink
           text='Личный кабинет'
           icon={<ProfileIcon type="secondary" />}
-          to={userState.isLogged ? '/profile' : '/login'}
+          to={isLogged ? '/profile' : '/login'}
         />
       </div>
-    </nav>
+    </header>
   )
 }
 

@@ -35,7 +35,7 @@ export const OrderInformationComponent = (props: Props) => {
   useEffect(() => {
     if (!id) {
       if (props.page === 'orderFeed') {
-        redirect('/order-feed')
+        redirect('/feed')
       } else {
         redirect('/profile/order')
       }

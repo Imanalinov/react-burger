@@ -1,5 +1,4 @@
-import { API_URL } from '../../utils/constants';
-import { checkResponse, fetchWithRefresh } from '../../utils/api-helpers';
+import { fetchWithRefresh, request } from '../../utils/api-helpers';
 import { clearTokens, getRefreshToken, setAccessToken, setRefreshToken } from '../../utils/token';
 import {
   ICreateUserRequest, IGetUser, ILoginRequest, IResetPasswordRequest, IResponseWithSuccess, IUpdateToken, IUserData
@@ -12,17 +11,18 @@ import {
  * }
  */
 export const forgotPasswordRequest = (email: string) => {
-  return fetch(`${API_URL}/password-reset`, {
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      email
-    })
-  })
-    .then(checkResponse<IResponseWithSuccess>)
-}
+  return request<IResponseWithSuccess>(
+    'password-reset', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email
+      })
+    }
+  );
+};
 
 /**
  * @example body {
@@ -36,15 +36,14 @@ export const forgotPasswordRequest = (email: string) => {
  * }
  */
 export const resetPasswordRequest = (body: IResetPasswordRequest): Promise<IResponseWithSuccess> => {
-  return fetch(`${API_URL}/password-reset/reset`, {
+  return request<IResponseWithSuccess>('password-reset/reset', {
     method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
-  })
-    .then(checkResponse<IResponseWithSuccess>)
-}
+  });
+};
 
 /**
  * @example body {
@@ -64,20 +63,19 @@ export const resetPasswordRequest = (body: IResetPasswordRequest): Promise<IResp
  * }
  */
 export const createUserRequest = (body: ICreateUserRequest): Promise<IUserData> => {
-  return fetch(`${API_URL}/auth/register`, {
+  return request<IUserData>('auth/register', {
     method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
   })
-    .then(checkResponse<IUserData>)
     .then((res) => {
-      setRefreshToken(res.refreshToken)
-      setAccessToken(res.accessToken)
+      setRefreshToken(res.refreshToken);
+      setAccessToken(res.accessToken);
       return res;
-    })
-}
+    });
+};
 
 /**
  * @example body {
@@ -96,20 +94,19 @@ export const createUserRequest = (body: ICreateUserRequest): Promise<IUserData> 
  * }
  */
 export const loginRequest = (body: ILoginRequest): Promise<IUserData> => {
-  return fetch(`${API_URL}/auth/login`, {
+  return request<IUserData>('auth/login', {
     method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
   })
-    .then(checkResponse<IUserData>)
     .then((res) => {
-      setRefreshToken(res.refreshToken)
-      setAccessToken(res.accessToken)
+      setRefreshToken(res.refreshToken);
+      setAccessToken(res.accessToken);
       return res;
-    })
-}
+    });
+};
 
 /**
  * @example return {
@@ -119,22 +116,24 @@ export const loginRequest = (body: ILoginRequest): Promise<IUserData> => {
  * }
  */
 export const updateTokenRequest = (): Promise<IUpdateToken> => {
-  return fetch(`${API_URL}/auth/token`, {
+  return request<IUpdateToken>('auth/token', {
     method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       token: localStorage.getItem('refreshToken')
     })
   })
-    .then(checkResponse<IUpdateToken>)
     .then((res) => {
-      setRefreshToken(res.refreshToken)
-      setAccessToken(res.accessToken)
+      setRefreshToken(res.refreshToken);
+      setAccessToken(res.accessToken);
       return res;
     })
-}
+    .catch((err) => {
+      return Promise.reject(err);
+    });
+};
 
 /**
  * @example return {
@@ -144,7 +143,7 @@ export const updateTokenRequest = (): Promise<IUpdateToken> => {
  */
 export const logoutRequest = (): Promise<boolean> => {
   return fetchWithRefresh<IResponseWithSuccess>(
-    '/auth/logout',
+    'auth/logout',
     {
       token: getRefreshToken()
     },
@@ -154,7 +153,7 @@ export const logoutRequest = (): Promise<boolean> => {
       clearTokens();
       return true;
     });
-}
+};
 
 /**
  * @example return {
@@ -166,5 +165,5 @@ export const logoutRequest = (): Promise<boolean> => {
  * }
  */
 export const getUserRequest = (): Promise<IGetUser> => {
-  return fetchWithRefresh<IGetUser>('/auth/user');
-}
+  return fetchWithRefresh<IGetUser>('auth/user');
+};

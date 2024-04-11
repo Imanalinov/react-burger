@@ -20,11 +20,7 @@ export const ingredientsInitialState: IIngredientsState = {
 export const getIngredientsAPI = createAsyncThunk<{ data: IIngredient[], success: boolean }>(
   'INGREDIENTS/GET_ALL',
   async (_, thunkAPI) => {
-    try {
-      return await getIngredientsRequest();
-    } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message });
-    }
+    return await getIngredientsRequest();
   }
 );
 

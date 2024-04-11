@@ -11,7 +11,7 @@ export const ProfilePage: React.FC = (): React.ReactElement | null => {
 
   useEffect(() => {
     dispatch(getUserAPI());
-  }, [dispatch])
+  }, [])
 
   const onFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 

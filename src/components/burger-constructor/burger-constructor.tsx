@@ -1,7 +1,7 @@
 import styles from './burger-constructor.module.scss';
 
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDrop } from 'react-dnd';
 
 import Modal from '../../dialog/modal/modal';
@@ -13,7 +13,7 @@ import { SelectedIngredient } from '../selected-ingredient/selected-ingredient';
 import { ingredientsSlice } from '../../services/slices/ingredients';
 import { IIngredient } from '../../models';
 import { useDispatch, useSelector } from '../../models/store.model';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const BurgerConstructor = () => {
   const selectedIngredients = useSelector(store => store.selectedIngredients);
@@ -25,6 +25,13 @@ const BurgerConstructor = () => {
   const { closeModal } = createdOrderSlice.actions;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.createOrder) {
+      createOrderHandler();
+    }
+  }, []);
 
   const [{ isOver }, dropRef] = useDrop({
     accept: ['main', 'sauce'],
@@ -48,10 +55,12 @@ const BurgerConstructor = () => {
       navigate(
         '/login', {
           state: {
-            prevPage: '/'
+            prevPage: '/',
+            createOrder: true,
           }
         }
       );
+      return;
     }
     if (!selectedIngredients.bun) {
       return;

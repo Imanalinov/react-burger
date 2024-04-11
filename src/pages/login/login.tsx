@@ -36,7 +36,8 @@ export const LoginPage = () => {
           navigate(
             location.state?.prevPage || '/profile',
             {
-              replace: true
+              replace: true,
+              state: location.state,
             }
           )
         });
