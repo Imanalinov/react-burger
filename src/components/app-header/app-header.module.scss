@@ -4,6 +4,11 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 
+  max-width: 70%;
+  margin: 0 auto;
+  overflow: hidden;
+
+
   &--link_wrapper {
     display: flex;
     align-items: center;
@@ -20,5 +25,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+}
+
+
+@media screen and  (max-width: 1440px) {
+  .header {
+    max-width: 97%;
   }
 }

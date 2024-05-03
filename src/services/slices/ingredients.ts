@@ -1,27 +1,26 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getIngredientsRequest } from '../../utils/burger-api';
 import { IIngredient } from '../../models';
+import { SliceActions } from '../../utils/actions-type';
 
 export interface IIngredientsState {
   loading: boolean;
   error: boolean;
   data: IIngredient[];
+  ingredientsMap: Record<string, IIngredient>;
 }
 
 export const ingredientsInitialState: IIngredientsState = {
   loading: true,
   error: false,
-  data: []
+  data: [],
+  ingredientsMap: {}
 };
 
 export const getIngredientsAPI = createAsyncThunk<{ data: IIngredient[], success: boolean }>(
   'INGREDIENTS/GET_ALL',
   async (_, thunkAPI) => {
-    try {
-      return await getIngredientsRequest();
-    } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message });
-    }
+    return await getIngredientsRequest();
   }
 );
 
@@ -89,8 +88,12 @@ export const ingredientsSlice = createSlice({
       return {
         loading: false,
         error: false,
-        data: action.payload
-      }
+        data: action.payload,
+        ingredientsMap: action.payload.reduce<Record<string, IIngredient>>((acc, item) => {
+          acc[item._id] = item;
+          return acc;
+        }, {})
+      };
     }
   },
   extraReducers: (builder) => {
@@ -101,6 +104,10 @@ export const ingredientsSlice = createSlice({
       state.loading = false;
       state.error = false;
       state.data = action.payload.data;
+      state.ingredientsMap = action.payload.data.reduce<Record<string, IIngredient>>((acc, item) => {
+        acc[item._id] = item;
+        return acc;
+      }, {})
     });
     builder.addCase(getIngredientsAPI.rejected, (state) => {
       state.error = true;
@@ -108,3 +115,5 @@ export const ingredientsSlice = createSlice({
     });
   }
 });
+
+export type TIngredientsActions = SliceActions<typeof ingredientsSlice.actions>;

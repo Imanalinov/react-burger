@@ -6,12 +6,17 @@ import reportWebVitals from './reportWebVitals';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { initialState, rootReducer } from './services/slices';
-import { IStoreState } from './models/store.model';
+import { BrowserRouter } from 'react-router-dom';
 
+export type TRootState = ReturnType<typeof store.getState>;
 
-const store = configureStore<IStoreState>({
+export type TAppDispatch = typeof store.dispatch;
+
+const store = configureStore({
   reducer: rootReducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware(),
+  middleware: getDefaultMiddleware => getDefaultMiddleware({
+    serializableCheck: false
+  }),
   devTools: true,
   preloadedState: initialState
 });
@@ -22,11 +27,13 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

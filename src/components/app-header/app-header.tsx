@@ -1,16 +1,15 @@
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link } from 'react-router-dom';
+
 import styles from './app-header.module.scss';
 import AppHeaderLink from '../app-header-link/app-header-link';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { IStoreState } from '../../models/store.model';
-import { IUserState } from '../../services/slices/user';
+import { useSelector } from '../../models/store.model';
 
 const AppHeader = () => {
-  const userState = useSelector<IStoreState, IUserState>(store => store.user);
+  const isLogged = useSelector(store => store.user.isLogged);
 
   return (
-    <nav className={styles.header}>
+    <header className={styles.header}>
 
       <div className={styles['header--link_wrapper']} >
         <AppHeaderLink
@@ -21,7 +20,7 @@ const AppHeader = () => {
         <AppHeaderLink
           text='Лента заказов'
           icon={<ListIcon  type="secondary" />}
-          to={'/'}
+          to={'/feed'}
         />
       </div>
 
@@ -35,10 +34,10 @@ const AppHeader = () => {
         <AppHeaderLink
           text='Личный кабинет'
           icon={<ProfileIcon type="secondary" />}
-          to={userState.isLogged ? '/profile' : '/login'}
+          to={isLogged ? '/profile' : '/login'}
         />
       </div>
-    </nav>
+    </header>
   )
 }
 

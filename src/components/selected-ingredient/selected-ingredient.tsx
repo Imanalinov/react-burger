@@ -3,8 +3,8 @@ import styles from './selected-ingredient.module.scss';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
 
+import { useDispatch } from '../../models/store.model';
 import { selectedIngredientsSlice } from '../../services/slices/selected-ingredients';
 import { ingredientsSlice } from '../../services/slices/ingredients';
 import { IIngredient } from '../../models';
@@ -38,7 +38,11 @@ export const SelectedIngredient: React.FC<Props> = ({ ingredient, index }) => {
       const dragIndex = item.index;
       const hoverIndex = ingredient.index;
 
-      if (dragIndex === hoverIndex || !dragIndex || !hoverIndex) {
+      if (
+        dragIndex === hoverIndex
+        || dragIndex === undefined
+        || hoverIndex === undefined
+      ) {
         return;
       }
 
@@ -55,7 +59,9 @@ export const SelectedIngredient: React.FC<Props> = ({ ingredient, index }) => {
 
   return (
     <div ref={ref} className={`${styles.div} ${isDragging ? styles['ingredient-dragging'] : ''}`}>
-      <DragIcon type="primary" />
+      <div>
+        <DragIcon type="primary" />
+      </div>
       <ConstructorElement
         isLocked={false}
         text={ingredient.name}

@@ -1,22 +1,26 @@
 import styles from './burger-ingredients-item.module.scss';
+
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import { ingredientDraggingSlice } from '../../services/slices/ingredient-dragging';
-import { IStoreState } from '../../models/store.model';
 import { IIngredient } from '../../models';
+import { useDispatch, useSelector } from '../../models/store.model';
+import { viewIngredientSlice } from '../../services/slices/view-ingredient';
 
 interface Props {
   ingredient: IIngredient;
 }
 
 const BurgerIngredientsItem: React.FC<Props> = ({ ingredient }) => {
-  const viewIngredient = useSelector<IStoreState, IIngredient | null>(store => store.viewIngredient.item);
+  const viewIngredient = useSelector(store => store.viewIngredient.item);
   const actions = ingredientDraggingSlice.actions;
+  const viewIngredientActions = viewIngredientSlice.actions;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [{ isDragging, canDrop }, dragRef] = useDrag({
     type: ingredient.type,
@@ -37,12 +41,7 @@ const BurgerIngredientsItem: React.FC<Props> = ({ ingredient }) => {
   }, [isDragging]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleItemClick = () => {
-    navigate({
-      pathname: `/ingredients/${ingredient._id}`,
-      search: createSearchParams({
-        from: 'main_page'
-      }).toString()
-    });
+    navigate(`/ingredients/${ingredient._id}`, { state: {page: location}});
   };
 
   return (
@@ -52,7 +51,7 @@ const BurgerIngredientsItem: React.FC<Props> = ({ ingredient }) => {
         onClick={handleItemClick}
         ref={dragRef}
       >
-        {ingredient.count && <Counter count={ingredient.count} size="default" extraClass="m-1" />}
+        {(ingredient.count && ingredient.count > 0) ? <Counter count={ingredient.count} size="default" extraClass="m-1" /> : null}
         <img
           src={ingredient.image}
           className={`${styles['ingredient--image']} pr-4 pl-4`}

@@ -1,27 +1,37 @@
-import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.scss';
-import React from 'react';
+
+import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useEffect } from 'react';
+import { useDrop } from 'react-dnd';
+
 import Modal from '../../dialog/modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { useDispatch, useSelector } from 'react-redux';
-import { createdOrderSlice, createOrderAPI, ICreateOrderState } from '../../services/slices/created-order';
-import { ISelectedIngredientsState, selectedIngredientsSlice } from '../../services/slices/selected-ingredients';
+import { createdOrderSlice, createOrderAPI } from '../../services/slices/created-order';
+import { selectedIngredientsSlice } from '../../services/slices/selected-ingredients';
 import { BunConstructorItem } from '../bun-constructor-item/bun-constructor-item';
 import { SelectedIngredient } from '../selected-ingredient/selected-ingredient';
-import { useDrop } from 'react-dnd';
 import { ingredientsSlice } from '../../services/slices/ingredients';
 import { IIngredient } from '../../models';
-import { IStoreState } from '../../models/store.model';
-import { IIngredientDraggingState } from '../../services/slices/ingredient-dragging';
+import { useDispatch, useSelector } from '../../models/store.model';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const BurgerConstructor = () => {
+  const selectedIngredients = useSelector(store => store.selectedIngredients);
+  const createdOrder = useSelector(store => store.createdOrder);
+  const draggingState = useSelector(store => store.ingredientDragging);
+  const isLoggedIn = useSelector(store => store.user.isLogged)
   const { increaseSelectedIngredient, resetCount } = ingredientsSlice.actions;
-  const selectedIngredients = useSelector<IStoreState, ISelectedIngredientsState>(store => store.selectedIngredients);
   const { add, reset } = selectedIngredientsSlice.actions;
-  const createdOrder = useSelector<IStoreState, ICreateOrderState>(store => store.createdOrder);
   const { closeModal } = createdOrderSlice.actions;
-  const draggingState = useSelector<IStoreState, IIngredientDraggingState>(store => store.ingredientDragging);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.createOrder) {
+      createOrderHandler();
+    }
+  }, []);
 
   const [{ isOver }, dropRef] = useDrop({
     accept: ['main', 'sauce'],
@@ -41,13 +51,23 @@ const BurgerConstructor = () => {
   };
 
   const createOrderHandler = () => {
+    if (!isLoggedIn) {
+      navigate(
+        '/login', {
+          state: {
+            prevPage: '/',
+            createOrder: true,
+          }
+        }
+      );
+      return;
+    }
     if (!selectedIngredients.bun) {
       return;
     }
     const selectedIds = selectedIngredients.ingredients.map((item) => item._id);
     selectedIds.push(selectedIngredients.bun._id);
 
-    // @ts-ignore
     dispatch(createOrderAPI(selectedIds));
   };
 
@@ -64,7 +84,9 @@ const BurgerConstructor = () => {
         ref={dropRef}>
         <ul className={styles.ul}>
           {selectedIngredients.ingredients.map((ingredient, index) => (
-            ingredient && <li
+            ingredient &&
+            <li
+              className={"w-full"}
               key={ingredient.uniqueId}
             >
               <SelectedIngredient ingredient={({ ...ingredient, index })} index={index} />

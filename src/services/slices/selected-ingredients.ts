@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import uniqueId from 'lodash/uniqueId';
 import { IIngredient } from '../../models';
+import { SliceActions } from '../../utils/actions-type';
 
 export interface ISelectedIngredientsState {
   totalPrice: number;
@@ -58,25 +59,6 @@ export const selectedIngredientsSlice = createSlice({
         bun: state.bun
       };
     },
-    set: (state: ISelectedIngredientsState, action: PayloadAction<IIngredient[]>) => {
-      const bun = action.payload.find(item => item.type === 'bun');
-      if (!bun) {
-        console.error('Не удалось найти булку', action.payload)
-        return state;
-      }
-      const ingredients = action.payload;
-      return {
-        totalPrice: ingredients.reduce((sum, item) => item.type !== 'bun' ? sum + item.price : sum, 0) + (bun.price * 2),
-        ingredients:
-          ingredients
-            .filter((item) => item.type !== 'bun')
-            .map(item => ({
-              ...item,
-              uniqueId: uniqueId()
-            })),
-        bun: bun
-      };
-    },
     move: (state: ISelectedIngredientsState, action: PayloadAction<{ dragIndex: number, hoverIndex: number }>) => {
       const arr = JSON.parse(JSON.stringify(state.ingredients));
 
@@ -93,3 +75,5 @@ export const selectedIngredientsSlice = createSlice({
     reset: (_: ISelectedIngredientsState) => selectedIngredientsInitialState
   }
 });
+
+export type TSelectedIngredientsActions = SliceActions<typeof selectedIngredientsSlice.actions>;

@@ -1,30 +1,19 @@
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { getIngredientsAPI, IIngredientsState } from '../../services/slices/ingredients';
 import React, { useEffect } from 'react';
-import { IViewIngredientState, viewIngredientSlice } from '../../services/slices/view-ingredient';
-import Modal from '../../dialog/modal/modal';
+import { useNavigate, useParams } from 'react-router-dom';
+import { viewIngredientSlice } from '../../services/slices/view-ingredient';
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
-import { IStoreState } from '../../models/store.model';
+import { useDispatch, useSelector } from '../../models/store.model';
 
 export const IngredientDetailsPage: React.FC = (): React.ReactElement => {
-  const [searchParams] = useSearchParams();
   const { id } = useParams();
 
-  const ingredientStore = useSelector<IStoreState, IIngredientsState>(store => store.ingredients);
+  const ingredientStore = useSelector(store => store.ingredients);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const viewIngredient = useSelector<IStoreState, IViewIngredientState>(store => store.viewIngredient);
+  const viewIngredient = useSelector(store => store.viewIngredient);
   const viewIngredientActions = viewIngredientSlice.actions;
-
-
-  useEffect(() => {
-    if (!ingredientStore.data.length) {
-      getIngredients();
-    }
-  }, [id]);
 
   useEffect(() => {
     const ing = ingredientStore.data?.find((ingredient) => ingredient._id === id);
@@ -33,14 +22,9 @@ export const IngredientDetailsPage: React.FC = (): React.ReactElement => {
     }
   }, [ingredientStore.data]);
 
-  const getIngredients = () => {
-    // @ts-ignore
-    dispatch(getIngredientsAPI());
-  };
-
   const handleCloseIngredientModal = () => {
     dispatch(viewIngredientActions.close());
-    navigate('/');
+    navigate(-1);
   };
 
   if (ingredientStore.loading || !viewIngredient) {
@@ -52,17 +36,8 @@ export const IngredientDetailsPage: React.FC = (): React.ReactElement => {
   }
 
   return (
-    searchParams.get('from') === 'main_page' ?
-      <Modal
-        closeAction={handleCloseIngredientModal}
-        title="Детали ингредиента"
-      >
-        <IngredientDetails />
-      </Modal>
-      :
-      <div className={'mt-30'}>
-        <IngredientDetails />
-      </div>
-
+    <div className={'mt-30'}>
+      <IngredientDetails />
+    </div>
   );
 };

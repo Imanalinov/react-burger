@@ -1,10 +1,21 @@
 import styles from './ingredient-details.module.scss';
-import { useSelector } from 'react-redux';
-import { IStoreState } from '../../models/store.model';
-import { IViewIngredientState } from '../../services/slices/view-ingredient';
+
+import { useSelector } from '../../models/store.model';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { IIngredient } from '../../models';
 
 const IngredientDetails = () => {
-  const { item } = useSelector<IStoreState, IViewIngredientState>(store => store.viewIngredient);
+  const { id } = useParams();
+  const ingredientsMap = useSelector(store => store.ingredients.ingredientsMap);
+  const [item, setItem] = useState<IIngredient | null>(null);
+
+  useEffect(() => {
+    const ing = ingredientsMap[id!];
+    if (ing) {
+      setItem(ing);
+    }
+  }, [ingredientsMap]);
 
   return (
     item &&

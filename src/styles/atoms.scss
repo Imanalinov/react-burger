@@ -2,6 +2,10 @@
   display: flex;
 }
 
+.inline {
+  display: inline;
+}
+
 .h-screen {
   height: 100vh;
 }
@@ -24,4 +28,20 @@
 
 .color-link {
   color: #4C4CFF;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+.items-center {
+  align-items: center;
+}
+.w-full {
+  width: 100%;
+}
+.shrink {
+  flex-shrink: 1;
+}
+.shrink-0 {
+  flex-shrink: 0;
 }

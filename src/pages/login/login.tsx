@@ -3,14 +3,12 @@ import styles from './login.module.scss';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { validateEmail } from '../../utils/validators';
 import { loginAPI } from '../../services/actions/user';
 import { useForm } from '../../hooks/use-form-hook';
-import { IStoreState } from '../../models/store.model';
-import { IUserState } from '../../services/slices/user';
+import { useDispatch, useSelector } from '../../models/store.model';
 
 const formInitialState = {
   email: '',
@@ -19,9 +17,10 @@ const formInitialState = {
 
 export const LoginPage = () => {
   const [form, onChange] = useForm(formInitialState);
-  const userState = useSelector<IStoreState, IUserState>(store => store.user);
+  const userState = useSelector(store => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (userState.user) {
@@ -32,13 +31,15 @@ export const LoginPage = () => {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (form.email.length && form.password.length && validateEmail(form.email)) {
-      // @ts-ignore
       dispatch(loginAPI(form))
-        // @ts-ignore
         .then((res) => {
-          navigate('/profile', {
-            replace: true
-          })
+          navigate(
+            location.state?.prevPage || '/profile',
+            {
+              replace: true,
+              state: location.state,
+            }
+          )
         });
     }
   };

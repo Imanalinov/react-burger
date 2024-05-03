@@ -14,18 +14,19 @@ const Modal: React.FC<Props> = ({ children, closeAction, title = '' }: Props) =>
   const modalContainer = document.getElementById('modals_container')!;
 
   useEffect(() => {
+    const keyPressHandler = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeAction();
+      }
+    };
     document.addEventListener('keydown', keyPressHandler);
 
     return () => {
       document.removeEventListener('keydown', keyPressHandler);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
-  const keyPressHandler = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
-      closeAction();
-    }
-  };
+
 
   return (
     createPortal(

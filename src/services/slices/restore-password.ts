@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { forgotPasswordAPI, resetPasswordAPI } from '../actions/restore-password';
 import { IResponseWithSuccess } from '../../models';
+import { SliceActions } from '../../utils/actions-type';
 
 interface IPasswordStateUtil {
   loading: boolean;
@@ -96,3 +97,5 @@ export const restorePasswordSlice = createSlice({
       }));
   }
 });
+
+export type TRestorePasswordActions = SliceActions<typeof restorePasswordSlice.actions>;
