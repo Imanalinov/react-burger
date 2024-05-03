@@ -20,12 +20,12 @@ import { ICreateUserRequest, IGetUser, ILoginRequest, IUpdateToken, IUserData } 
  */
 export const loginAPI = createAsyncThunk<IUserData, ILoginRequest>(
   'USER/LOGIN',
-  async (body: ILoginRequest, thunkAPI) => await loginRequest(body)
+  loginRequest
 );
 
 export const createUserAPI = createAsyncThunk<IUserData, ICreateUserRequest>(
   'USER/REGISTER',
-  async (body: ICreateUserRequest, thunkAPI) => await createUserRequest(body)
+  createUserRequest
 );
 
 /**
@@ -37,7 +37,7 @@ export const createUserAPI = createAsyncThunk<IUserData, ICreateUserRequest>(
  */
 export const updateTokenAPI = createAsyncThunk<IUpdateToken, void>(
   'USER/UPDATE_TOKEN',
-  async (arg, thunkAPI) => await updateTokenRequest()
+  updateTokenRequest
 );
 
 /**
@@ -51,7 +51,7 @@ export const updateTokenAPI = createAsyncThunk<IUpdateToken, void>(
  */
 export const getUserAPI = createAsyncThunk<IGetUser>(
   'USER/GET_USER',
-  async (_, thunkAPI) => await getUserRequest() as IGetUser
+  getUserRequest
 );
 
 /**
@@ -62,6 +62,6 @@ export const getUserAPI = createAsyncThunk<IGetUser>(
  */
 export const logoutAPI = createAsyncThunk<boolean>(
   'USER/LOGOUT',
-  async (_, thunkAPI) => await logoutRequest()
+  logoutRequest
 );
 

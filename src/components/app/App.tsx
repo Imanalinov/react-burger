@@ -47,7 +47,7 @@ function App() {
               element={<OrderFeedPage />}
             />
             <Route
-              path="order-feed/:id"
+              path="feed/:id"
               element={
                 <OrderInformationPage page="orderFeed" />
               }

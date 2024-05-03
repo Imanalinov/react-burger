@@ -4,7 +4,7 @@ import { updateTokenRequest } from '../services/api/user';
 
 export const BASE_URL = "https://norma.nomoreparties.space/api/";
 
-const checkResponse = (res: any) => {
+const checkResponse = (res: Response) => {
   if (res.ok) {
     return res.json();
   }
