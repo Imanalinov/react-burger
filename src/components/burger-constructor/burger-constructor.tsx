@@ -76,6 +76,7 @@ const BurgerConstructor = () => {
       <BunConstructorItem isTop={true} />
 
       <div
+        data-cy="ingredients-drop_area"
         className={`
           ${styles.overflow}
           ${draggingState.isDragging && draggingState.item?.type !== 'bun' ? styles.is_dragging : ''}
@@ -100,7 +101,7 @@ const BurgerConstructor = () => {
       {/*---PRICE AND CREATE ORDER---*/}
       <div className={`mt-10 ${styles['constructor--submit']}`}>
         <span className={`mr-10`}>
-          <span className={`text text_type_digits-medium`}>
+          <span className={`text text_type_digits-medium`} data-cy="constructor-total_price">
             {selectedIngredients.totalPrice}
           </span>
           <CurrencyIcon type="primary" />
@@ -112,6 +113,7 @@ const BurgerConstructor = () => {
           size="large"
           onClick={createOrderHandler}
           disabled={createdOrder.loading}
+          data-cy="create_order-button"
         >
           <p className="text text_type_main-default">
             Оформить заказ

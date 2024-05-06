@@ -47,6 +47,7 @@ const BurgerIngredientsItem: React.FC<Props> = ({ ingredient }) => {
   return (
     <>
       <div
+        data-cy={ingredient._id}
         className={styles.ingredient}
         onClick={handleItemClick}
         ref={dragRef}

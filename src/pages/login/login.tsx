@@ -57,6 +57,7 @@ export const LoginPage = () => {
           name={'email'}
           isIcon={false}
           placeholder={'E-mail'}
+          data-cy="email-input"
         />
         <PasswordInput
           onChange={onChange}
@@ -65,6 +66,7 @@ export const LoginPage = () => {
           extraClass="mt-6"
           autoComplete={'password'}
           placeholder={'Пароль'}
+          data-cy="password-input"
         />
         <Button
           htmlType="submit"
@@ -73,7 +75,10 @@ export const LoginPage = () => {
           extraClass={'mt-6'}
           disabled={userState.loading}
         >
-          <p className="text text_type_main-default">
+          <p
+            className="text text_type_main-default"
+            data-cy="login-btn"
+          >
             Войти
           </p>
         </Button>

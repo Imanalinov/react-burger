@@ -19,17 +19,17 @@ const IngredientDetails = () => {
 
   return (
     item &&
-    <div>
+    <div data-cy="ingredient-details">
       <img
         src={item.image_large}
         alt={item.name}
         className={`mx-auto block`}
       />
-      <p className={`mt-4 text text_type_main-medium text-center`}>
+      <p className={`mt-4 text text_type_main-medium text-center`} data-cy="ingredient-name">
         {item.name}
       </p>
       <div className={`mt-8 ${styles['ingredient--characteristic']}`}>
-        <div>
+        <div data-cy="ingredient-calories">
           <p
             className={`text text_type_main-default text_color_inactive`}
           >
@@ -39,7 +39,7 @@ const IngredientDetails = () => {
             {item.calories}
           </p>
         </div>
-        <div>
+        <div data-cy="ingredient-proteins">
           <p
             className={`text text_type_main-default text_color_inactive`}
           >
@@ -49,7 +49,7 @@ const IngredientDetails = () => {
             {item.proteins}
           </p>
         </div>
-        <div>
+        <div data-cy="ingredient-fats">
           <p
             className={`text text_type_main-default text_color_inactive`}
           >
@@ -58,7 +58,7 @@ const IngredientDetails = () => {
             {item.fat}
           </p>
         </div>
-        <div>
+        <div data-cy="ingredient-carbohydrates">
           <p
             className={`text text_type_main-default text_color_inactive`}
           >
