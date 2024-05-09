@@ -1,9 +1,10 @@
 import { ingredientsSlice } from '../ingredients';
-import { initialState, rootReducer } from '../index';
 import { IIngredient } from '../../../models';
+import configureMockStore from 'redux-mock-store';
+import { thunk } from 'redux-thunk';
+import { initialState, rootReducer } from '../index';
 import { configureStore } from '@reduxjs/toolkit';
 import fetchMock from 'fetch-mock';
-import configureMockStore from 'redux-mock-store';
 
 const ingredients = [
   {
@@ -38,25 +39,23 @@ const ingredients = [
 
 const emptryIngredients: IIngredient[] = [];
 
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: getDefaultMiddleware => getDefaultMiddleware({
+    serializableCheck: false
+  }),
+  devTools: true,
+  preloadedState: initialState
+});
+
+const middlewares = [thunk];
+const store2 = configureMockStore();
+
 describe('Ingredients slice', () => {
 
   afterEach(() => {
     fetchMock.restore();
   });
-
-  // const enhancer = applyMiddleware(thunk);
-  // const store = createStore(rootReducer, enhancer);
-
-  const store = configureStore({
-    reducer: rootReducer,
-    middleware: getDefaultMiddleware => getDefaultMiddleware({
-      serializableCheck: false
-    }),
-    devTools: true,
-    preloadedState: initialState
-  });
-
-  const store2 = configureMockStore();
 
   const { set, increaseBun, decreaseBun, decreaseSelectedIngredient, increaseSelectedIngredient, resetCount} = ingredientsSlice.actions;
 
