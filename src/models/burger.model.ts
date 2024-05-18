@@ -20,8 +20,20 @@ export interface IIngredient {
 export interface IOrderResponse {
   name: string;
   order: {
-    number: number
+    ingredients: IIngredient[];
+    number: number;
+    owner?: {
+      name: string;
+      email: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+    _id: string;
+    status?: string;
+    name?: string;
+    createdAt: string;
+    updatedAt: string;
+    price: number
   };
-  number: number;
   success: boolean;
 }

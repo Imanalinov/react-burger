@@ -37,7 +37,7 @@ const Modal: React.FC<Props> = ({ children, closeAction, title = '' }: Props) =>
           className={styles.modal}
         >
           <div className={styles['modal--wrapper']}>
-            <div className={styles['modal--header']}>
+            <div className={styles['modal--header']} data-cy="modal__header">
               <p className={`text text_type_main-large`}>{title}</p>
               <CloseIcon
                 type="primary"

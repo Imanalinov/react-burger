@@ -8,9 +8,10 @@ interface Props {
 
 const OrderDetails: React.FC<Props> = ({ orderId }) => {
   return (
-    <div className={styles.order_details}>
+    <div className={styles.order_details} data-cy="order_details">
       <p
         className="text text_type_digits-large"
+        data-cy="order-id"
       >
         {orderId}
       </p>

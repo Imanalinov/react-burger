@@ -38,6 +38,7 @@ export const BunConstructorItem: React.FC<Props> = ({ isTop }) => {
       <li
         className={styles.li}
         ref={bunDropTarget}
+        data-cy="constructor-bun"
       >
         {
           bun ?
@@ -54,6 +55,7 @@ export const BunConstructorItem: React.FC<Props> = ({ isTop }) => {
              `}
             /> :
             <div
+              data-cy={isTop ? 'bun-drop_area-top' : 'bun-drop_area-bot'}
               className={`
               ${styles.empty_bun}
               ${draggingState.isDragging && draggingState.item?.type === 'bun' ? styles.bun_dragging : ''}

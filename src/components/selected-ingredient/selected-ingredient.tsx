@@ -58,7 +58,11 @@ export const SelectedIngredient: React.FC<Props> = ({ ingredient, index }) => {
   drag(drop(ref));
 
   return (
-    <div ref={ref} className={`${styles.div} ${isDragging ? styles['ingredient-dragging'] : ''}`}>
+    <div
+      ref={ref}
+      className={`${styles.div} ${isDragging ? styles['ingredient-dragging'] : ''}`}
+      data-cy="constructor-ingredient"
+    >
       <div>
         <DragIcon type="primary" />
       </div>
