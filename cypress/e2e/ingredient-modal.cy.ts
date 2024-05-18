@@ -1,6 +1,7 @@
 import * as ingredients from '../fixtures/ingredients.json';
 import { IngredientDetailsPom } from '../pages/ingredient-details.pom';
 import { ModalPom } from '../pages/modal.pom';
+import { BASE_URL, TEST_URL } from '../support/constants';
 
 describe('Testing ingredient modal', () => {
   const { page, fats, name, proteins, carbohydrates, calories } = IngredientDetailsPom.elements;
@@ -10,9 +11,9 @@ describe('Testing ingredient modal', () => {
   const id = ingredient._id;
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000');
+    cy.visit(TEST_URL);
 
-    cy.intercept('GET', 'https://norma.nomoreparties.space/api/ingredients', {
+    cy.intercept('GET', `${BASE_URL}/ingredients`, {
       statusCode: 200,
       body: ingredients
     }).as('getIngredients');
@@ -25,12 +26,12 @@ describe('Testing ingredient modal', () => {
   });
 
   it('should url equal ingredients/id', () => {
-    cy.url().should('eq', `http://localhost:3000/ingredients/${id}`);
+    cy.url().should('eq', `${TEST_URL}/ingredients/${id}`);
 
 
     header().find('svg').click();
 
-    cy.url().should('eq', 'http://localhost:3000/');
+    cy.url().should('eq', `${TEST_URL}/`);
   });
 
   it('should modal contains all data', () => {
@@ -51,6 +52,6 @@ describe('Testing ingredient modal', () => {
   it('should close modal on click close button in header', () => {
     header().find('svg').click();
 
-    cy.url().should('eq', 'http://localhost:3000/');
+    cy.url().should('eq', `${TEST_URL}/`);
   });
 });

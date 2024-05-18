@@ -8,6 +8,10 @@ export class BurgerConstructorPom {
     ingredient: (ingredient: IIngredient) => cy.get(`[data-cy="${ingredient._id}"]`),
     totalPrice: () => cy.get('[data-cy="constructor-total_price"]'),
     dropedIngredients: () => cy.get('[data-cy="constructor-ingredient"]'),
-    dropedBun: () => cy.get('[data-cy="constructor-bun"]')
+    dropedBun: () => cy.get('[data-cy="constructor-bun"]'),
+    bunPrice: () => cy.get('[data-cy="constructor-bun"] > .constructor-element > .constructor-element__row > .constructor-element__price'),
+    bunText: () => cy.get('[data-cy="constructor-bun"] > .constructor-element > .constructor-element__row > .constructor-element__text'),
+    ingredientText: () => cy.get('[data-cy="constructor-ingredient"] > .constructor-element > .constructor-element__row > .constructor-element__text'),
+    ingredientPrice: () => cy.get('[data-cy="constructor-ingredient"] > .constructor-element > .constructor-element__row > .constructor-element__price')
   };
 }

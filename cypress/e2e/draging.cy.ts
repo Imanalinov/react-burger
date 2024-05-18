@@ -3,6 +3,7 @@ import { BurgerConstructorPom } from '../pages/burger-constructor.pom';
 import { LoginPom } from '../pages/login.pom';
 import * as orderJSON from '../fixtures/order.json';
 import { ModalPom } from '../pages/modal.pom';
+import { BASE_URL, TEST_URL } from '../support/constants';
 
 describe('Testing dragging and create order', () => {
 
@@ -12,9 +13,9 @@ describe('Testing dragging and create order', () => {
   const loginPom = LoginPom.elements;
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000');
+    cy.visit(TEST_URL);
 
-    cy.intercept('GET', 'https://norma.nomoreparties.space/api/ingredients', {
+    cy.intercept('GET', `${BASE_URL}/ingredients`, {
       statusCode: 200,
       body: ingredientsJSON
     }).as('getIngredients');
@@ -29,40 +30,22 @@ describe('Testing dragging and create order', () => {
   it('should drag ingredients to constructor', () => {
     pom.totalPrice().should('have.text', (ingredients[0].price * 2) + ingredients[1].price);
 
-    cy
-      .get('[data-cy="constructor-bun"] > .constructor-element > .constructor-element__row > .constructor-element__text')
-      .eq(0)
-      .should('have.text', 'Краторная булка N-200i... (верх)');
+    pom.bunText().eq(0).should('have.text', 'Краторная булка N-200i... (верх)');
+    pom.bunText().eq(1).should('have.text', 'Краторная булка N-200i... (низ)');
 
-    cy
-      .get('[data-cy="constructor-bun"] > .constructor-element > .constructor-element__row > .constructor-element__text')
-      .eq(1)
-      .should('have.text', 'Краторная булка N-200i... (низ)');
+    pom.bunPrice().eq(0).should('have.text', ingredients[0].price);
+    pom.bunPrice().eq(1).should('have.text', ingredients[0].price);
 
-    cy
-      .get('.mb-4 > [data-cy="constructor-bun"] > .constructor-element > .constructor-element__row > .constructor-element__price')
-      .eq(0)
-      .should('have.text', ingredients[0].price);
+    pom.ingredientText().should('have.text', ingredients[1].name);
 
-    cy
-      .get('[data-cy="constructor-bun"] > .constructor-element > .constructor-element__row > .constructor-element__price')
-      .eq(1)
-      .should('have.text', ingredients[0].price);
-
-    cy
-      .get('[data-cy="constructor-ingredient"] > .constructor-element > .constructor-element__row > .constructor-element__text')
-      .should('have.text', ingredients[1].name);
-
-    cy
-      .get('[data-cy="constructor-ingredient"] > .constructor-element > .constructor-element__row > .constructor-element__price')
-      .should('have.text', ingredients[1].price);
+    pom.ingredientPrice().should('have.text', ingredients[1].price);
   });
 
 
   it('should create order', () => {
     pom.createOrderButton().click();
 
-    cy.url().should('eq', 'http://localhost:3000/login');
+    cy.url().should('eq', `${TEST_URL}/login`);
 
     loginPom.email().type('fara.imanalinov@gmail.com', { force: true });
     loginPom.password().type('123123', { force: true });
@@ -70,7 +53,7 @@ describe('Testing dragging and create order', () => {
 
     cy.intercept(
       'POST',
-      'https://norma.nomoreparties.space/api/auth/login',
+      `${BASE_URL}/auth/login`,
       {
         statusCode: 200,
         body: {
@@ -89,7 +72,7 @@ describe('Testing dragging and create order', () => {
 
     cy.intercept(
       'POST',
-      'https://norma.nomoreparties.space/api/orders',
+      `${BASE_URL}/orders`,
       {
         statusCode: 200,
         body: orderJSON
